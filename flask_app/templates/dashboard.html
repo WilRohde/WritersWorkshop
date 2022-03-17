@@ -28,13 +28,14 @@
     </div>
     <br>
     <h2 class="h2-workshop">Available Genres</h2>
+    <br>
     <div class="workshop-list">
         {% for genre in genres %}
-            <p><a href="/genre/{{genre.id}}">{{genre.name}}</a>  {{genre.short_description}}</p>
+            <p>{{genre.name}} -- {{genre.short_description}}</p>
         {% endfor %}
     </div>
     <br>
-    <h2 class="h2-workshop">You Submissions</h2>
+    <h2 class="h2-workshop">Your Submissions</h2>
     <br>
     <div class="workshop-list">
         {% for submission in submissions %}
