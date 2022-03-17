@@ -1,0 +1,182 @@
+.container-loginpage {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-left: 5%;
+    width: 90%;
+    height: 90%;
+    justify-content: space-around;
+}
+.login-container {
+    display: flex;
+    flex-direction: column;
+    columns: 2;
+}
+.workshop-container {
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    height: 70%;
+    margin-left: 10%;
+    border: 2px yellow solid;
+}
+.workshop-wide {
+    display: flex;
+    flex-direction: row;
+    width: 80%;
+    height: 70%;
+    margin-left: 10%;
+    border: 2px blue solid;
+}
+.lbl-login-data {
+    color: white;
+    margin-left: 20px;
+}
+.input-login-data {
+    width: 70%;
+    margin-left: 20px;
+}
+.p-survey-data {
+    color: white;
+    text-align: left;
+    margin: 5px 5px 5px 10%;
+    width: 40%;
+}
+.email-warnings {
+    background-color: red;
+}
+.email-message {
+    color: white;
+    margin-left: 20px;
+}
+.show-message {
+    color: black;
+    margin-left: 10%;
+}
+.div-registration {
+    display: flex;
+    flex-direction: column;
+    background-color: black;
+    border-radius: 5%;
+    margin-left: 100px;
+    margin-bottom: 30px;
+    height: 50%;
+    width: 30%
+}
+.div-login {
+    display: flex;
+    flex-direction: column;
+    background-color: black;
+    border-radius: 5%;
+    margin-left: 50px;
+    height: 50%;
+    width: 30%;
+}
+.register-form {
+    display: flex;
+    flex-direction: column;
+}
+.btn-register {
+    width: 20%;
+    margin: 10px 0px 10px 50px;
+}
+.btn-login {
+    width: 20%;
+    margin: 10px 0px 10px 50px;
+}
+.h2-registration {
+    color: blue;
+    font-size: 30px;
+    margin: 10px 0px 10px 20px;
+}
+.h2-login {
+    color: green;
+    font-size: 30px;
+    margin: 10px 0px 10px 20px;
+}
+.lbl-register {
+    color: white;
+    margin-left: 20px;
+}
+.h1-login {
+    text-align: center;
+}
+.h2-workshop {
+    margin-left: 10%;
+}
+.h3-workshop {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.btn-workshop {
+    margin: 10px 0px 0px 0px;
+}
+.btn-dashboard {
+    margin: 10px 10px 10px 50px;
+}
+.workshop-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 80%;
+    margin-left: 10%;
+    background-color: grey;
+}
+.workshop-header-btns {
+    display: flex;
+    flex-direction: row;
+}
+.workshop-card {
+    width: 60%;
+    height: 60%;
+    margin-left: 20%;
+}
+.table-shows {
+    width: 80%;
+    margin-left: 10%;
+}
+.btn-add-shows {
+    margin-left: 80%;
+}
+.btn-create {
+    margin-left: 10%;
+    width: 20%;
+    box-shadow: 5px 5px grey;
+}
+.workshop-item {
+    margin-left: 10%;
+    width: 50%;
+}
+.edit-col-1 {
+    border: 2px red solid;
+    width: 50%
+}
+.workshop-list {
+    border: 2px purple solid;
+    width: 80%;
+    height: 50%;
+    margin-left: 10%;
+}
+.group-form {
+    border: 2px fuchsia solid;
+    width: 80%;
+    height: 80%;
+    display: flex;
+    flex-direction: row;
+    margin-left: 10%;
+}
+.group-div {
+    border: 2px green solid;
+    width: 50%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+.membership-list {
+    border: 2px red solid;
+    width: 75%;
+    height: 75%;
+    display: flex;
+    flex-direction: column;
+}

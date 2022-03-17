@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel='stylesheet' type='text/css' href='{{ url_for('static', filename='/css/bootstrap.css') }}'>
+    <link rel='stylesheet' type='text/css' href='{{ url_for('static', filename='/css/style.css') }}'>
+    <title>Writer's Workshop</title>
+</head>
+<body>
+    <div class="workshop-header">
+        <h1 class="h1-workshop">Welcome Back {{session['firstname']}}!</h1>
+        <div class="workshop-header-btns">
+            <form action="/dashboard"><button type="submit" class="btn-success btn-workshop">Dashboard</button></form>
+            <form action="/logout"><button type="submit" class="btn-danger btn-workshop">Logout</button></form>
+        </div>
+    </div>
+    <br>
+    <h2 class="h2-workshop">Create a New Writing Group</h2>
+        <form action="/group/create" method="post" class="group-form">
+            <div class="group-div">
+                <label for="groupname" class="workshop-item">Group Name: </label>
+                <input type="text" id="groupname" name="groupname" class="workshop-item">
+                <br>
+                <label for="genre" class="workshop-item">Select a Genre for your group: </label>
+                <select name="genre" id="genre" class="workshop-item">
+                    {% for genre in genres %}
+                        <option value="{{genre.id}}">{{genre.name}}</option>
+                    {% endfor %}
+                </select>
+                <br>
+                <label for="founding_date" class="workshop-item">Founding Date for Group: </label>
+                <input type="date" name="founding_date" id="founding_date" class="workshop-item">
+            </div>
+            <div class="group-div">
+                <label for="short_description" class="workshop-item">Short Description: </label>
+                <input type="text" id="short_description" name="short_description" class="workshop-item">
+                <label for="description" class="workshop-item">Description: </label>
+                <textarea name="description" id="description" cols="30" rows="10" class="workshop-item"></textarea>
+                <br>
+                <button type="submit" class="btn-success btn-register">Submit</button>
+            </div>
+        </form>
+</body>

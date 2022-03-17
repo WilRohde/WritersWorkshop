@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel='stylesheet' type='text/css' href='{{ url_for('static', filename='/css/bootstrap.css') }}'>
+    <link rel='stylesheet' type='text/css' href='{{ url_for('static', filename='/css/style.css') }}'>
+    <title>Writer's Workshop</title>
+</head>
+<body>
+    <div class="workshop-header">
+        <h1 class="h1-workshop">Welcome Back {{session['firstname']}}!</h1>
+        <div class="workshop-header-btns">
+            <form action="/dashboard"><button type="submit" class="btn-success btn-workshop">Dashboard</button></form>
+            <form action="/logout"><button type="submit" class="btn-danger btn-workshop">Logout</button></form>
+        </div>
+    </div>
+    <br>
+    <h2 class="h2-workshop">{{group.name}}</h2>
+    <div class="workshop-container">
+        <div class="group-div">
+            <p class="workshop-item">{{group.description}}</p>
+            <br><br>
+            <p class="workshop-item">Genre: {{group.genre}}</p>
+            <br><br>
+            <p class="workshop-item">Founded on {{group.founding_date}}</p>
+            <br><br>
+            <p class="workshop-item">Created by: {{group.creator.first_name}} {{group.creator.last_name}}</p>
+        </div>
+        <div class="group-div">
+            <br><br>
+            <h2 class="h2-workshop">Membership List: </h2>
+            <div class="membership-list">
+                {% for member in group.members %}
+                    <p>{{member.first_name}} {{member.last_name}}</p>
+                {% endfor %}
+            </div>
+            <form action="/group/join/{{group.id}}"><button type="submit" class="btn-primary btn-register">Join Group</button></form>
+        </div>
+    </div>
+</body>
