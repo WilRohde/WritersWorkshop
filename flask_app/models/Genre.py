@@ -29,7 +29,7 @@ class Genre:
         
     @classmethod
     def save(cls,data):
-        query = "INSERT INTO Genres (name, description, short_description "\
+        query = "INSERT INTO Genres (name, description, short_description) "\
                 "VALUES (%(name)s, %(description)s, %(short_description)s);"
         return MySQLConnection(dbName).query_db( query, data )
 

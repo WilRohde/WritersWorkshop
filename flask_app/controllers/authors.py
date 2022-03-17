@@ -4,6 +4,8 @@ from flask_bcrypt import Bcrypt
 from flask_app.models.Author import Author
 from flask_app.models.Group import Group
 from flask_app.models.Submission import Submission
+from flask_app.models.Genre import Genre
+
 bcrypt = Bcrypt(app)
 
 @app.route('/')
@@ -43,11 +45,6 @@ def login():
     session['firstname'] = Author_in_db.first_name
     session['lastname'] = Author_in_db.last_name
 
-    #data = { 'id': Author_in_db.id }
-    #Author_in_db.likes = Author.get_Author_likes(data)
-
-    #Author_in_db.shows = Author.get_Author_shows(data)
-    # never render on a post!!!
     return redirect('/dashboard')
 
 @app.route('/dashboard')
@@ -55,7 +52,7 @@ def home():
     data = {
         'id': session['Author_id']
     }
-    return render_template('dashboard.html',groups = Group.get_all(), submissions = Submission.get_all(data))
+    return render_template('dashboard.html',groups = Group.get_all(), submissions = Submission.get_all(data), genres = Genre.get_all() )
 
 @app.route('/logout')
 def logout():
