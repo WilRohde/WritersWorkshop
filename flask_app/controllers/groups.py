@@ -7,7 +7,10 @@ from flask_app.models.Genre import Genre
 
 @app.route('/group/<int:id>')
 def view(id):
-    return render_template('group.html',group = Group.get_by_id(id))
+    data = {
+        'id': id
+    }
+    return render_template('group.html',group = Group.get_by_id(data))
 
 @app.route('/group/join/<int:id>')
 def join(id):

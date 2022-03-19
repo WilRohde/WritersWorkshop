@@ -49,9 +49,9 @@ class Group:
             return False
         group = cls(result[0])
         data = {
-            'id': group.creator_id
+            'Author_id': group.creator_id
         }
-        group.creator = Author.get_author_by_id(data)
+        group.creator = Author.get_Author_by_id(data)
         data = {
             'id': group.id
         }
@@ -68,7 +68,17 @@ class Group:
             return Groups
 
         for result in results:
-            Groups.append(cls(result))
+            this_group = cls(result)
+            data = {
+                'Author_id': this_group.creator_id
+            }
+            this_group.creator = Author.get_Author_by_id(data)
+            data = {
+                'id': this_group.id
+            }
+            this_group.members = Author.get_group_members(data)
+            this_group.member_count = len(this_group.members)
+            Groups.append(this_group)
         return Groups
 
     @classmethod

@@ -22,12 +22,13 @@ class Submission:
         self.author_id = data['author_id']
         self.group = None
         self.author = None
+        self.reviews = None
 
     @classmethod
     def save(cls, data):
         query = "INSERT INTO Submissions (title, description, filename, filesize, filetype, data, "\
                 "Group_id, Author_id) VALUES (%(title)s, %(description)s, %(filename)s, "\
-                "%(filesize)s, %(filetype)s, %(data)s);"
+                "%(filesize)s, %(filetype)s, %(submission_text)s, %(group_id)s, %(Author_id)s);"
         return MySQLConnection(dbName).query_db( query, data )
 
     @classmethod

@@ -52,23 +52,14 @@ class Author:
     @classmethod
     def get_group_members(cls,data):
         query = "SELECT Authors.* FROM Authors LEFT JOIN GroupMembers "\
-                "ON authors.id = GroupMembers.author_id LEFT JOIN Groups ON GroupMembers.Group_id = "\
-                "Groups.id WHERE Group.id = %(id)s;"
+                "ON authors.id = GroupMembers.author_id LEFT JOIN WritingGroups ON GroupMembers.Group_id = "\
+                "WritingGroups.id WHERE WritingGroups.id = %(id)s;"
         members = []
         results = MySQLConnection(dbName).query_db( query, data )
         for result in results:
             members.append(cls(result))
         return members
 
-
-    @classmethod
-    def get_Author_shows(cls, data):
-        query = "SELECT id FROM shows where shows.Author_id = %(id)s;"
-        results = MySQLConnection(dbName).query_db( query, data )
-        shows = []
-        for result in results:
-            shows.append(result)
-        return shows
 
     @staticmethod
     def validate(data):
