@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel='stylesheet' type='text/css' href='{{ url_for('static', filename='/css/bootstrap.css') }}'>
+    <link rel='stylesheet' type='text/css' href='{{ url_for('static', filename='/css/style.css') }}'>
+    <title>Writer's Workshop</title>
+</head>
+<body>
+    <div class="workshop-header">
+        <h1 class="h1-workshop">Welcome Back {{session['firstname']}}!</h1>
+        <div class="workshop-header-btns">
+            <form action="/dashboard"><button type="submit" class="btn-success btn-workshop">Dashboard</button></form>
+            <form action="/logout"><button type="submit" class="btn-danger btn-workshop">Logout</button></form>
+        </div>
+    </div>
+    <br>
+    <div class="submission-div">
+        <form action="/submit/save" method="post" class="submit-form">
+            <h3 class="h3-submit">Cut and paste you submission below.</h3>
+            <input type="text" hidden readonly name="group_id" id="group_id" value="{{group.id}}">
+            <div class="submission-wide">
+                <div class="div-title">
+                    <label for="title">Title: </label>
+                    <input type="text" name="title" id="title" class="title-box">
+                </div>
+                <div class="div-title">
+                    <label for="description">Short Description:</label>
+                    <input type="text" name="description" id="description" class="title-box">
+                </div>
+            </div>
+            <label for="submission_text">Your submission: </label>
+            <textarea name="submission_text" id="submission_text" rows="15" class="submission_area"></textarea>
+            <input type="submit" class="btn-success btn-workshop btn-submission">
+        </form>
+    </div>
+</body>
