@@ -38,7 +38,7 @@
     <br>
     <div class="workshop-list">
         {% for submission in submissions %}
-            <p><a href="/submit/{{submission.id}}">{{submission.title}}</a>     {{submission.review_count}} Reviews</p>
+            <p><a href="/submit/review/{{submission.id}}">{{submission.title}}</a>     {{submission.review_count}} Reviews</p>
         {% endfor %}
     </div>
 </body>

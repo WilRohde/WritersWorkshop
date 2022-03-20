@@ -4,13 +4,14 @@ from flask_app import app
 from flask_bcrypt import Bcrypt
 from flask_app.models.Group import Group
 from flask_app.models.Genre import Genre
+from flask_app.models.Submission import Submission
 
 @app.route('/group/<int:id>')
 def view(id):
     data = {
         'id': id
     }
-    return render_template('group.html',group = Group.get_by_id(data))
+    return render_template('group.html',group = Group.get_by_id(data), submissions = Submission.get_all_by_group(data))
 
 @app.route('/group/join/<int:id>')
 def join(id):

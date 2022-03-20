@@ -39,3 +39,16 @@ def upload_submission():
     }
     Submission.save(data)
     return redirect('/dashboard')
+
+@app.route('/submit/update/<int:id>', methods=['POST'])
+def update_submission(id):
+    data = {
+        'id': id,
+        'title': request.form['title'],
+        'description': request.form['description'],
+        'submission_text': request.form['submission_text'],
+        'group_id': request.form['group_id'],
+        'Author_id': session['Author_id']
+    }
+    Submission.update(data)
+    return redirect('/dashboard')

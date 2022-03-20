@@ -31,15 +31,28 @@ class Submission:
         return MySQLConnection(dbName).query_db( query, data )
 
     @classmethod
+    def update(cls, data):
+        query = "UPDATE Submissions SET title=%(title)s, description=%(description)s, data=%(submission_text)s, "\
+                "Group_id=%(group_id)s, Author_id=%(Author_id)s WHERE Submissions.id = %(id)s;"
+        return MySQLConnection(dbName).query_db( query, data )
+
+    @classmethod
     def get(cls,data):
         query = "SELECT * FROM Submissions WHERE id = %(id)s;"
         results = MySQLConnection(dbName).query_db( query, data )
         this_submission = cls(results[0])
         # NOTE need to get the group and the author
-        this_submission.author = Author.get_Author_by_id(this_submission.author_id)
-        this_submission.group = Group.get_by_id(this_submission.group_id)
+        data = {
+            'Author_id': this_submission.author_id
+        }
+        this_submission.author = Author.get_Author_by_id(data)
+        data = {
+            'id': this_submission.group_id
+        }
+        this_submission.group = Group.get_by_id(data)
         this_submission.reviews = Review.get_by_submission(this_submission.id)
         this_submission.review_count = len(this_submission.reviews)
+        return this_submission
 
     @classmethod
     def get_all(cls,data):
@@ -64,7 +77,13 @@ class Submission:
         for result in results:
             # NOTE need to get the group and the author
             this_submission = cls(result)
+            data = {
+                'Author_id': this_submission.author_id
+            }
             this_submission.author = Author.get_Author_by_id(this_submission.author_id)
+            data = {
+                'id': this_submission.group_id
+            }
             this_submission.group = Group.get_by_id(this_submission.group_id)
             this_submission.reviews = Review.get_by_submission(this_submission.id)
             this_submission.review_count = len(this_submission.reviews)
