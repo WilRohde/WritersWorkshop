@@ -14,7 +14,6 @@
         <div class="workshop-header-btns">
             <form action="/genre/new"><button type="submit" class="btn-warning btn-workshop">Create a New Genre</button></form>
             <form action="/group/new"><button type="submit" class="btn-primary btn-workshop">Create a New Group</button></form>
-            <form action="/submission/new"><button type="submit" class="btn-primary btn-workshop">Submit New Work</button></form>
             <form action="/logout"><button type="submit" class="btn-primary btn-workshop">Logout</button></form>
         </div>
     </div>
@@ -39,7 +38,7 @@
     <br>
     <div class="workshop-list">
         {% for submission in submissions %}
-            <p><a href="/submission/{{submission.id}}">{{submission.title}}</a></p>
+            <p><a href="/submit/{{submission.id}}">{{submission.title}}</a>     {{submission.review_count}} Reviews</p>
         {% endfor %}
     </div>
 </body>

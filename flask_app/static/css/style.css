@@ -14,7 +14,7 @@
 }
 .workshop-container {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     width: 80%;
     height: 70%;
     margin-left: 10%;
@@ -179,4 +179,54 @@
     height: 75%;
     display: flex;
     flex-direction: column;
+}
+.submission-text {
+    border: 2px green solid;
+    width: 100%;
+    height: 50%;
+    margin-left: 10%;
+}
+.submission-div {
+    border: 2px purple solid;
+    width: 80%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    margin-left: 10%;
+}
+.submission-item {
+    margin-left: 10%;
+}
+.submit-form {
+    border: 2px yellowgreen solid;
+    display:flex;
+    flex-direction: column;
+    width: 100%;
+    height: 80%;
+}
+.btn-submission {
+    width: 10%;
+    margin-left: 10%;
+}
+.title-box {
+    width: 50%;
+}
+.submission-area {
+    width: 80%;
+    margin-left: 10%;
+    box-shadow: 3px black;
+}
+.submission-wide {
+    width: 80%;
+    margin-left: 10%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.div-title {
+    width: 70%;
+    border: 2px blue solid;
+}
+.h3-submit {
+    margin-left: 30%;
 }

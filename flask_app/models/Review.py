@@ -15,7 +15,10 @@ class Review:
         self.submission = None
 
     @classmethod
-    def get_by_submission(cls,data):
+    def get_by_submission(cls,id):
+        data = {
+            'id': id
+        }
         query = "SELECT * FROM Reviews where Submission_id = %(id)s;"
         results = MySQLConnection(dbName).query_db( query, data )
         reviews = []

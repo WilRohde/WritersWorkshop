@@ -5,6 +5,7 @@ import tkinter as tk
 from tkinter import filedialog
 from flask_app.models.Author import Author
 from flask_app.models.Group import Group
+from flask_app.models.Review import Review
 
 dbName = "workshop_schema"
 class Submission:
@@ -12,23 +13,21 @@ class Submission:
         self.id = data['id']
         self.title = data['title']
         self.description = data['description']
-        self.filename = data['filename']
-        self.filesize = data['filesize']
-        self.filetype = data['filetype']
         self.data = data['data']
         self.created_at = data['created_at']
         self.updated_at = data['updated_at']
-        self.group_id = data['group_id']
-        self.author_id = data['author_id']
+        self.group_id = data['Group_id']
+        self.author_id = data['Author_id']
+        self.review_count = 0
         self.group = None
         self.author = None
         self.reviews = None
 
     @classmethod
     def save(cls, data):
-        query = "INSERT INTO Submissions (title, description, filename, filesize, filetype, data, "\
-                "Group_id, Author_id) VALUES (%(title)s, %(description)s, %(filename)s, "\
-                "%(filesize)s, %(filetype)s, %(submission_text)s, %(group_id)s, %(Author_id)s);"
+        query = "INSERT INTO Submissions (title, description, data, "\
+                "Group_id, Author_id) VALUES (%(title)s, %(description)s, "\
+                "%(submission_text)s, %(group_id)s, %(Author_id)s);"
         return MySQLConnection(dbName).query_db( query, data )
 
     @classmethod
@@ -39,6 +38,8 @@ class Submission:
         # NOTE need to get the group and the author
         this_submission.author = Author.get_Author_by_id(this_submission.author_id)
         this_submission.group = Group.get_by_id(this_submission.group_id)
+        this_submission.reviews = Review.get_by_submission(this_submission.id)
+        this_submission.review_count = len(this_submission.reviews)
 
     @classmethod
     def get_all(cls,data):
@@ -48,8 +49,10 @@ class Submission:
         for result in results:
             # NOTE need to get the group and the author
             this_submission = cls(result)
-            this_submission.author = Author.get_Author_by_id(this_submission.author_id)
-            this_submission.group = Group.get_by_id(this_submission.group_id)
+            #this_submission.author = Author.get_Author_by_id(this_submission.author_id)
+            #this_submission.group = Group.get_by_id(this_submission.group_id)
+            this_submission.reviews = Review.get_by_submission(this_submission.id)
+            this_submission.review_count = len(this_submission.reviews)
             submissions.append(this_submission)
         return submissions
 
@@ -63,6 +66,8 @@ class Submission:
             this_submission = cls(result)
             this_submission.author = Author.get_Author_by_id(this_submission.author_id)
             this_submission.group = Group.get_by_id(this_submission.group_id)
+            this_submission.reviews = Review.get_by_submission(this_submission.id)
+            this_submission.review_count = len(this_submission.reviews)
             submissions.append(this_submission)
         return submissions
 

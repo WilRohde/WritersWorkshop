@@ -12,7 +12,8 @@
     <div class="workshop-header">
         <h1 class="h1-workshop">Welcome Back {{session['firstname']}}!</h1>
         <div class="workshop-header-btns">
-            <form action="/dashboard"><button type="submit" class="btn-success btn-workshop">Dashboard</button></form>
+            <form action="/submit/new/{{group.id}}"><button type="submit" class="btn-success btn-workshop">Submit to this Group</button></form>
+            <form action="/dashboard"><button type="submit" class="btn-warning btn-workshop">Dashboard</button></form>
             <form action="/logout"><button type="submit" class="btn-danger btn-workshop">Logout</button></form>
         </div>
     </div>
@@ -20,23 +21,34 @@
     <h2 class="h2-workshop">{{group.name}}</h2>
     <div class="workshop-container">
         <div class="group-div">
-            <p class="workshop-item">{{group.description}}</p>
-            <br><br>
             <p class="workshop-item">Genre: {{group.genre}}</p>
-            <br><br>
+            <br>
+            <p class="workshop-item">{{group.description}}</p>
+            <br>
             <p class="workshop-item">Founded on {{group.founding_date}}</p>
-            <br><br>
+            <br>
             <p class="workshop-item">Created by: {{group.creator.first_name}} {{group.creator.last_name}}</p>
         </div>
         <div class="group-div">
-            <br><br>
             <h2 class="h2-workshop">Membership List: </h2>
             <div class="membership-list">
                 {% for member in group.members %}
-                    <p>{{member.first_name}} {{member.last_name}}</p>
+                    {%if member.id == session['Author_id']%}
+                        {% with inGroup=True %}
+                        {% endwith %}
+                    {% endif %}
+                    <p class="workshop-item">{{member.first_name}} {{member.last_name}}</p>
                 {% endfor %}
             </div>
-            <form action="/group/join/{{group.id}}"><button type="submit" class="btn-primary btn-register">Join Group</button></form>
+            {% if inGroup==True %}
+                <form action="/group/join/{{group.id}}"><button type="submit" class="btn-primary btn-register">Join Group</button></form>
+            {% endif %}
         </div>
+    </div>
+    <h2 class="h2-workshop">Submissions for This Group:</h2>
+    <div class="workshop-container">
+        {% for submission in submissions %}
+            <p class="workshop-item"><a href="/submit/{{submission.id}}">{{submission.title}}</a>  {{submission.description}} by {{submission.author.firstname}} {{submission.author.lastname}} on {{submission.created_at}}  {{submission.review_count}} reviews.</p>
+        {% endfor %}
     </div>
 </body>

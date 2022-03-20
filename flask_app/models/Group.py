@@ -16,10 +16,10 @@ class Group:
         self.updated_at = data['updated_at']
         self.creator_id = data['Creator_id']
         self.genre_id = data['Genre_id']
+        self.genre = data['GenreName']
         self.member_count = 0
         self.creator = None
         self.members = []
-        self.genre = None
 
     def getCreator(data):
         pass
@@ -43,7 +43,8 @@ class Group:
 
     @classmethod
     def get_by_id(cls,data):
-        query = "SELECT * FROM WritingGroups WHERE id = %(id)s;"
+        query = "SELECT WritingGroups.*, Genres.name as GenreName FROM WritingGroups LEFT JOIN Genres "\
+                " ON WritingGroups.genre_id = Genres.id WHERE WritingGroups.id = %(id)s;"
         result = MySQLConnection(dbName).query_db( query, data )
         if len(result) < 1:
             return False
@@ -61,7 +62,8 @@ class Group:
 
     @classmethod
     def get_all(cls):
-        query = "SELECT * FROM WritingGroups;"
+        query = "SELECT WritingGroups.*, Genres.name as GenreName FROM WritingGroups "\
+                "LEFT JOIN Genres ON WritingGroups.genre_id = Genres.id;"
         results = MySQLConnection(dbName).query_db( query )
         Groups = []
         if results == False:
@@ -81,10 +83,6 @@ class Group:
             Groups.append(this_group)
         return Groups
 
-    @classmethod
-    def get_genre(cls,data):
-        pass
-    
     @classmethod
     def delete(cls,data):
         # delete the members first
