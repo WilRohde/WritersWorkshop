@@ -13,6 +13,9 @@ def new_genre():
 
 @app.route('/genre/create', methods=['POST'])
 def create_genre():
+    if not Genre.validate(request.form):
+        return redirect('/genre/new')
+
     data = {
         'name': request.form['genrename'],
         'short_description': request.form['short_description'],

@@ -39,3 +39,18 @@ class Genre:
         query = "UPDATE Genres SET name = %(name)s, description = %(description)s, "\
                 "short_description = %(short_description)s where id = %(id)s;"
         return MySQLConnection(dbName).query_db( query, data )
+
+    @staticmethod
+    def validate(data):
+        is_valid = True
+        if data['genrename'] == "":
+            flash("Genre Name is Required", "Genre")
+            is_valid = False
+        if data['short_description'] == "":
+            flash("Genre Short Description is Required", "Genre")
+            is_valid = False
+        if data['description'] == "":
+            flash("Genre Description is Required", "Genre")
+            is_valid = False
+        return is_valid
+        

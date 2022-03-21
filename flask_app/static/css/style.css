@@ -49,6 +49,10 @@
     color: white;
     margin-left: 20px;
 }
+.group-message {
+    color: red;
+    margin-left: 10%;
+}
 .show-message {
     color: black;
     margin-left: 10%;

@@ -17,6 +17,13 @@
         </div>
     </div>
     <br>
+    {% with messages = get_flashed_messages(category_filter=['Genre']) %}    <!-- declare a variable called messages -->
+        {% if messages %}                           <!-- check if there are any messages -->
+            {% for message in messages %}           <!-- loop through the messages -->
+                <p class="group-message">{{message}}</p>                  <!-- display each message in a paragraph tag -->
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
     <h2 class="h2-workshop">Create a New Genre</h2>
     <form action="/genre/create" method="post" class="group-form">
         <div class="group-div">

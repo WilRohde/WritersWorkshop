@@ -1,8 +1,11 @@
+from operator import is_
 from flask_app.config.mySQLConnection import MySQLConnection, connectToMySQL
 from flask import flash
 from flask_app import app
 from flask_app.models.Author import Author
 from flask_app.models.Genre import Genre
+from flask_app.models.Creator import Creator
+from flask_app.models.Dateformat import DateFormat
 
 dbName = "workshop_schema"
 class Group:
@@ -11,18 +14,16 @@ class Group:
         self.name = data['name']
         self.description = data['description']
         self.short_description = data['short_description']
-        self.founding_date = data['founding_date']
         self.created_at = data['created_at']
         self.updated_at = data['updated_at']
+        founding_date = data['founding_date']
+        self.founding_date = DateFormat.format_date(founding_date)
         self.creator_id = data['Creator_id']
         self.genre_id = data['Genre_id']
         self.genre = data['GenreName']
         self.member_count = 0
         self.creator = None
         self.members = []
-
-    def getCreator(data):
-        pass
 
     @classmethod
     def save(cls,data):
@@ -64,9 +65,10 @@ class Group:
             return False
         group = cls(result[0])
         data = {
-            'Author_id': group.creator_id
+            'Creator_id': group.creator_id
         }
-        group.creator = Author.get_Author_by_id(data)
+        group.creator = Creator.get(data)
+        #group.creator = Author.get_Author_by_id(data)
         data = {
             'id': group.id
         }
@@ -86,9 +88,10 @@ class Group:
         for result in results:
             this_group = cls(result)
             data = {
-                'Author_id': this_group.creator_id
+                'Creator_id': this_group.creator_id
             }
-            this_group.creator = Author.get_Author_by_id(data)
+            #this_group.creator = Author.get_Author_by_id(data)
+            this_group.creator = Creator.get(data)
             data = {
                 'id': this_group.id
             }
@@ -109,8 +112,28 @@ class Group:
     
     @classmethod
     def update(cls, data):
+        # NOTE: you cannot change/update the group's creator
         query = "UPDATE WritingGroups SET name = %(name)s, description = %(description)s, "\
                 "short_description = %(short_description)s, founding_date = %(founding_date)s, "\
-                "creator_id = %(creator_id)s WHERE id = %(id)s;"
+                "WHERE id = %(id)s;"
         return MySQLConnection(dbName).query_db( query, data )
 
+    @staticmethod
+    def validate(data):
+        is_Valid = True
+        if data['groupname'] == "":
+            flash("Group Name is Required","Group")
+            is_Valid = False
+        if data['genre'] == "":
+            flash("Group Genre is Required","Group")
+            is_Valid = False
+        if data['description'] == "":
+            flash("Group Description is Required","Group")
+            is_Valid = False
+        if data['short_description'] == "":
+            flash("Group Short Description is Required","Group")
+            is_Valid = False
+        if data['founding_date'] == "":
+            flash("Group Founding Date is Required","Group")
+            is_Valid = False
+        return is_Valid

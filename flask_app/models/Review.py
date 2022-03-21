@@ -1,7 +1,9 @@
+from sqlite3 import Date
 from flask_app.config.mySQLConnection import MySQLConnection, connectToMySQL
 from flask import flash
 from flask_app import app
 from flask_app.models.Reviewer import Reviewer
+from flask_app.models.Dateformat import DateFormat
 
 dbName = "workshop_schema"
 class Review:
@@ -14,6 +16,7 @@ class Review:
         self.reviewer_id = data['Reviewer_id']
         self.reviewer = None
         self.submission = None
+        self.review_date = DateFormat.format_date(self.updated_at)
 
     @classmethod
     def get_by_submission(cls,id):
