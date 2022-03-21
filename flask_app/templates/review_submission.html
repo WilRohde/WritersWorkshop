@@ -38,7 +38,7 @@
     </div>
     {% if submission.review_count > 0 %}
     <h2>Reviews for {{submission.title}}</h2>
-    {% end if %}
+    {% endif %}
     {% for review in submission.reviews %}
         <div class="div-review">
             <p>Reviewed by {{review.reviewer.first_name}} {{review.reviewer.last_name}} on {{review.updated_at}}</p>

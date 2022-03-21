@@ -43,6 +43,7 @@ class Author:
     @classmethod
     def get_Author_by_id(cls,data):
         query = "SELECT * FROM Authors WHERE id = %(Author_id)s;"
+        print(f"get_Author_by_id query = {query}")
         result = MySQLConnection(dbName).query_db( query, data )
         if len(result) <= 0:
             print('get_Author_by_id Returned False')

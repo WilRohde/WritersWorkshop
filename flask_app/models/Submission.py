@@ -80,11 +80,12 @@ class Submission:
             data = {
                 'Author_id': this_submission.author_id
             }
-            this_submission.author = Author.get_Author_by_id(this_submission.author_id)
+            print(f"Looking for submissions from Author_id = {this_submission.author_id}")
+            this_submission.author = Author.get_Author_by_id(data)
             data = {
                 'id': this_submission.group_id
             }
-            this_submission.group = Group.get_by_id(this_submission.group_id)
+            this_submission.group = Group.get_by_id(data)
             this_submission.reviews = Review.get_by_submission(this_submission.id)
             this_submission.review_count = len(this_submission.reviews)
             submissions.append(this_submission)

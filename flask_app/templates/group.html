@@ -33,22 +33,16 @@
             <h2 class="h2-workshop">Membership List: </h2>
             <div class="membership-list">
                 {% for member in group.members %}
-                    {%if member.id == session['Author_id']%}
-                        {% with inGroup=True %}
-                        {% endwith %}
-                    {% endif %}
                     <p class="workshop-item">{{member.first_name}} {{member.last_name}}</p>
                 {% endfor %}
             </div>
-            {% if inGroup==True %}
-                <form action="/group/join/{{group.id}}"><button type="submit" class="btn-primary btn-register">Join Group</button></form>
-            {% endif %}
+            <form action="/group/join/{{group.id}}"><button type="submit" class="btn-primary btn-register">Join Group</button></form>
         </div>
     </div>
     <h2 class="h2-workshop">Submissions for This Group:</h2>
     <div class="workshop-container">
         {% for submission in submissions %}
-            <p class="workshop-item"><a href="/submit/{{submission.id}}">{{submission.title}}</a>  {{submission.description}} by {{submission.author.firstname}} {{submission.author.lastname}} on {{submission.created_at}}  {{submission.review_count}} reviews.</p>
+            <p class="workshop-item"><a href="/submit/review/{{submission.id}}">{{submission.title}}</a>  {{submission.description}} by {{submission.author.firstname}} {{submission.author.lastname}} on {{submission.created_at}}  {{submission.review_count}} reviews.</p>
         {% endfor %}
     </div>
 </body>
