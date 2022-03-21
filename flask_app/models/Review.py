@@ -19,16 +19,7 @@ class Review:
         data = {
             'id': id
         }
-        query = "SELECT * FROM Reviews where Submission_id = %(id)s;"
-        results = MySQLConnection(dbName).query_db( query, data )
-        reviews = []
-        for result in results:
-            reviews.append(cls(result))
-        return reviews
-    
-    @classmethod
-    def get_by_reviewer(cls, data):
-        query = "SELECT * FROM Reviews where Reviewer_id = %(id)s;"
+        query = "SELECT * FROM Reviews WHERE Submission_id = %(id)s;"
         results = MySQLConnection(dbName).query_db( query, data )
         reviews = []
         for result in results:
@@ -36,17 +27,35 @@ class Review:
         return reviews
 
     @classmethod
-    def Save(cls,data):
+    def get_by_reviewer_submission(cls,data):
+        query = "SELECT * FROM Reviews WHERE Submission_id = %(id)s AND Reviewer_id = %(reviewer_id)s;"
+        results = MySQLConnection(dbName).query_db( query, data )
+        if results == ():
+            return None
+        else:
+            return cls(results[0])
+
+    @classmethod
+    def get_by_reviewer(cls, data):
+        query = "SELECT * FROM Reviews WHERE Reviewer_id = %(id)s;"
+        results = MySQLConnection(dbName).query_db( query, data )
+        reviews = []
+        for result in results:
+            reviews.append(cls(result))
+        return reviews
+
+    @classmethod
+    def save(cls,data):
         query = "INSERT INTO Reviews (text, Submission_id, Reviewer_id) VALUES "\
-                "(%(text)s, %(submission_id)s, %(reviewer_id)s;"
+                "(%(text)s, %(submission_id)s, %(reviewer_id)s);"
         return MySQLConnection(dbName).query_db( query, data )
 
     @classmethod
-    def Delete(cls,data):
+    def delete(cls,data):
         query = "DELETE FROM Reviews WHERE id = %(id)s;"
         return MySQLConnection(dbName).query_db( query, data )
 
     @classmethod
-    def Update(cls,data):
-        query = "UPDATE Reviews text = %(text)s WHERE id = %(id)s;"
+    def update(cls,data):
+        query = "UPDATE Reviews SET text = %(text)s WHERE id = %(id)s;"
         return MySQLConnection(dbName).query_db( query, data )

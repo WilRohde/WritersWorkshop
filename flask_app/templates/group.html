@@ -45,9 +45,9 @@
     <div class="workshop-container">
         {% for submission in submissions %}
             {% if submission.id == session['Author_id'] %}
-                <p><a href="/submit/update/{{submission.id}}">{{submission.title}}</a> <span hidden>{{submission.author.id}}</span> {{submission.description}} by {{submission.author.first_name}} {{submission.author.last_name}} on {{submission.created_at}}  {{submission.review_count}} reviews.</p>
-            {% else %}
                 <p><a href="/submit/review/{{submission.id}}">{{submission.title}}</a> <span hidden>{{submission.author.id}}</span> {{submission.description}} by {{submission.author.first_name}} {{submission.author.last_name}} on {{submission.created_at}}  {{submission.review_count}} reviews.</p>
+            {% else %}
+                <p><a href="/review/{{submission.id}}">{{submission.title}}</a> <span hidden>{{submission.author.id}}</span> {{submission.description}} by {{submission.author.first_name}} {{submission.author.last_name}} on {{submission.created_at}}  {{submission.review_count}} reviews.</p>
             {% endif %}
         {% endfor %}
     </div>

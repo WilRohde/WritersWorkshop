@@ -230,3 +230,10 @@
 .h3-submit {
     margin-left: 30%;
 }
+.div-review {
+    margin-left: 10%;
+    border: 2px gold solid;
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+}

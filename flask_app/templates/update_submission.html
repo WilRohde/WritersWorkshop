@@ -19,7 +19,7 @@
     <br>
     <div class="submission-div">
         <form action="/submit/update/{{submission.id}}" method="post" class="submit-form">
-            <h3 class="h3-submit">Submission {{submission.title}}</h3>
+            <h3 class="h3-submit">{{submission.title}}</h3>
             <input type="text" hidden readonly name="group_id" id="group_id" value="{{submission.group.id}}">
             <div class="submission-wide">
                 <div class="div-title">
@@ -37,12 +37,12 @@
         </form>
     </div>
     {% if submission.review_count > 0 %}
-    <h2>Reviews for {{submission.title}}</h2>
+    <h2 class="h2-workshop">Reviews for {{submission.title}}</h2>
     {% endif %}
     {% for review in submission.reviews %}
         <div class="div-review">
             <p>Reviewed by {{review.reviewer.first_name}} {{review.reviewer.last_name}} on {{review.updated_at}}</p>
-            <p>review.text</p>
+            <p>{{review.text}}</p>
         </div>
     {% endfor %}
 </body>

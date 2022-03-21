@@ -24,14 +24,14 @@
         <textarea readonly name="submission_text" id="submission_text" rows="15" class="submission_area">{{submission.data}}</textarea>
     </div>
     <br><br>
-    <form action="/review/post" method="post">
-        <h2 class="h2-workshop">Write a Review</h2>
+    <form action="/review/update/{{review.id}}" method="post">
+        <h2 class="h2-workshop">Update Your Review</h2>
         <br>
         <div class="submission-div">
             <label for="review_text">Your Feedback: </label>
             <input type="text" hidden readonly name="submission_id" id="submission_id" value="{{submission.id}}">
-            <textarea name="review_text" id="review_text" rows="15" class="submission_area"></textarea>
-            <button type="submit" class="btn-success btn-workshop btn-submission">Post</button>
+            <textarea name="review_text" id="review_text" rows="15" class="submission_area">{{review.text}}</textarea>
+            <button type="submit" class="btn-success btn-workshop btn-submission">Update</button>
         </div>
     </form>
 </body>
