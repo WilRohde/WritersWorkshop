@@ -42,6 +42,20 @@ class Group:
         return MySQLConnection(dbName).query_db( query, data )
 
     @classmethod
+    def join(cls,data):
+        query = "INSERT INTO GroupMembers(group_id, author_id) VALUES (%(group_id)s, %(author_id)s);"
+        return MySQLConnection(dbName).query_db( query, data )
+
+    @classmethod
+    def is_member(cls,data):
+        query = "SELECT * FROM GroupMembers where group_id = %(group_id)s AND author_id=%(author_id)s;"
+        results = MySQLConnection(dbName).query_db( query, data )
+        if len(results) > 0:
+            return True
+        else:
+            return False
+
+    @classmethod
     def get_by_id(cls,data):
         query = "SELECT WritingGroups.*, Genres.name as GenreName FROM WritingGroups LEFT JOIN Genres "\
                 " ON WritingGroups.genre_id = Genres.id WHERE WritingGroups.id = %(id)s;"

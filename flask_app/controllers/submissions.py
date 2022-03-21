@@ -4,11 +4,18 @@ from flask_app.models.Submission import Submission
 from flask_app.models.Group import Group
 
 @app.route('/submit/review/<int:id>')
-def edit_submission(id):
+def review_submission(id):
     data = {
         'id': id
     }
     return render_template('review_submission.html', submission = Submission.get(data))
+    
+@app.route('/submit/edit/<int:id>')
+def edit_submission(id):
+    data = {
+        'id': id
+    }
+    return render_template('update_submission.html', submission = Submission.get(data))
 
 @app.route('/submit/new/<int:id>')
 def new_submission(id):
