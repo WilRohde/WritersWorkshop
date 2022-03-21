@@ -1,8 +1,6 @@
 from flask_app.config.mySQLConnection import MySQLConnection, connectToMySQL
 from flask import flash
 from flask_app import app
-import tkinter as tk
-from tkinter import filedialog
 from flask_app.models.Author import Author
 from flask_app.models.Group import Group
 from flask_app.models.Review import Review

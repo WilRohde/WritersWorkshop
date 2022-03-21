@@ -44,7 +44,7 @@
     <h2 class="h2-workshop">Submissions for This Group:</h2>
     <div class="workshop-container">
         {% for submission in submissions %}
-            {% if submission.id == session['Author_id'] %}
+            {% if submission.author_id == session['Author_id'] %}
                 <p><a href="/submit/review/{{submission.id}}">{{submission.title}}</a> <span hidden>{{submission.author.id}}</span> {{submission.description}} by {{submission.author.first_name}} {{submission.author.last_name}} on {{submission.created_at}}  {{submission.review_count}} reviews.</p>
             {% else %}
                 <p><a href="/review/{{submission.id}}">{{submission.title}}</a> <span hidden>{{submission.author.id}}</span> {{submission.description}} by {{submission.author.first_name}} {{submission.author.last_name}} on {{submission.created_at}}  {{submission.review_count}} reviews.</p>

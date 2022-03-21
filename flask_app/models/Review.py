@@ -1,6 +1,7 @@
 from flask_app.config.mySQLConnection import MySQLConnection, connectToMySQL
 from flask import flash
 from flask_app import app
+from flask_app.models.Reviewer import Reviewer
 
 dbName = "workshop_schema"
 class Review:
@@ -23,7 +24,9 @@ class Review:
         results = MySQLConnection(dbName).query_db( query, data )
         reviews = []
         for result in results:
-            reviews.append(cls(result))
+            review = cls(result)
+            review.reviewer = Reviewer.get_reviewer(review.reviewer_id)
+            reviews.append(review)
         return reviews
 
     @classmethod
@@ -33,15 +36,19 @@ class Review:
         if results == ():
             return None
         else:
-            return cls(results[0])
-
+            review = cls(results[0])
+            review.reviewer = Reviewer.get_reviewer(review.reviewer_id)
+            return review
+            
     @classmethod
     def get_by_reviewer(cls, data):
         query = "SELECT * FROM Reviews WHERE Reviewer_id = %(id)s;"
         results = MySQLConnection(dbName).query_db( query, data )
         reviews = []
         for result in results:
-            reviews.append(cls(result))
+            review = cls(result)
+            review.reviewer = Reviewer.get_reviewer(review.reviewer_id)
+            reviews.append(review)
         return reviews
 
     @classmethod
