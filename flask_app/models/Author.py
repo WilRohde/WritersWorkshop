@@ -13,6 +13,7 @@ dbName = "workshop_schema"
 class Author:
     def __init__(self,data):
         self.id = data['id']
+        self.username = data['username']
         self.email = data['email']
         self.first_name = data['firstname']
         self.last_name = data['lastname']
@@ -22,9 +23,30 @@ class Author:
 
     @classmethod
     def save(cls,data):
-        query = "INSERT INTO Authors (email, firstname, lastname, password) VALUES (%(email)s, %(firstname)s, %(lastname)s, %(password)s);"
-        return MySQLConnection(dbName).query_db( query, data )
-
+        print("in save method")
+        print(data['username'])
+        print(data['email'])
+        print(data['firstname'])
+        print(data['lastname'])
+        print(data['password'])
+        _data = {
+            data['username'],
+            data['email'],
+            data['firstname'],
+            data['lastname'],
+            data['password']
+        }
+        _id = MySQLConnection(dbName).call_proc('create_author',_data)
+        if (_id == False):
+            return False
+        else:
+            # it worked. Now go back and get the member from the db
+            _data = {
+                _id
+            }
+            _author = MySQLConnection(dbName).call_proc('get_author_by_id',_data)
+            return _author
+            
     @classmethod
     def login(cls,data):
         query = "SELECT * FROM Authors WHERE email = %(email)s;"

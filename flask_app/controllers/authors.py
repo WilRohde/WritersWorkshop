@@ -19,12 +19,18 @@ def register():
     data = {
         "firstname": request.form['firstname'],
         "lastname": request.form['lastname'],
+        "username": request.form['username'],
         "email": request.form['email'],
         "password": bcrypt.generate_password_hash(request.form['password'])
     }
-    session['Author_id'] = Author.save(data)
-    session['firstname'] = request.form['firstname']
-    session['lastname'] = request.form['lastname']
+    oAuthor = Author.save(data)
+    if (oAuthor == False):
+        # return to the registration but we have to tell them something
+        return redirect('/')
+    session['id'] = oAuthor.id
+    session['firstname'] = oAuthor.first_name
+    session['lastname'] = oAuthor.last_name
+    session['username'] = oAuthor.username
     return redirect('/dashboard')
 
 @app.route('/login', methods=['POST'])
