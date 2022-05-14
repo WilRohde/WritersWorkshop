@@ -4,6 +4,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `create_genre`(
     IN description VARCHAR(255)
 )
 BEGIN
+    DECLARE new_identity INT DEFAULT 0;
 	DECLARE exit handler for 1062
     BEGIN
 		SELECT "This group name already exists in the database.";
@@ -16,5 +17,7 @@ BEGIN
     START TRANSACTION;
 		INSERT INTO Genres (name, short_description, description) 
         VALUES (name, short_description, description);
+        SET new_identity = LAST_INSERT_ID();
+        SELECT * FROM Genres WHERE id = new_identity;
 	COMMIT;
 END

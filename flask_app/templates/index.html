@@ -6,53 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel='stylesheet' type='text/css' href='{{ url_for('static', filename='/css/bootstrap.css') }}'>
     <link rel='stylesheet' type='text/css' href='{{ url_for('static', filename='/css/style.css') }}'>
+    <link rel='stylesheet' type='text/css' href='{{ url_for('static', filename='/css/newstyle.css') }}'>
     <title>Writer's Workshop</title>
 </head>
 <body>
-    <h1 class="h1-login">User Registration</h1>
-    <div class="container-loginpage">
-    <div class="div-registration">
-        <h2 class="h2-registration">Registration</h2>
-        {% with messages = get_flashed_messages(category_filter=['register']) %}    <!-- declare a variable called messages -->
-            {% if messages %}                           <!-- check if there are any messages -->
-                {% for message in messages %}           <!-- loop through the messages -->
-                    <p class="email-message">{{message}}</p>                  <!-- display each message in a paragraph tag -->
-                {% endfor %}
-            {% endif %}
-        {% endwith %}
-        <form action="/register" method="post" class="register-form">
-            <label for="firstname" class="lbl-register">FirstName: </label>
-            <input type="text" name="firstname" id="firstname" class="input-login-data">
-            <label for="lastname" class="lbl-register">Last Name: </label>
-            <input type="text" name="lastname" id="lastname" class="input-login-data">
-            <label for="username" class="lbl-register">Username: </label>
-            <input type="text" name="username" id="username" class="input-login-data">
-            <label for="email" class="lbl-register">Email: </label>
-            <input type="text" name="email" id="email" class="input-login-data">
-            <label for="password" class="lbl-register">Password: </label>
-            <input type="password" name="password" id="password" class="input-login-data">
-            <label for="confirm-password" class="lbl-register">Confirm Password: </label>
-            <input type="password" name="confirm-password" id="confirm-password" class="input-login-data">
-            <button type="submit" id="Submit" class="btn btn-primary btn-register">Submit</button>
-        </form>
-    </div>
-    <div class="div-login">
-        <h2 class="h2-login">Login</h2>
-        {% with messages = get_flashed_messages(category_filter=['login']) %}    <!-- declare a variable called messages -->
-            {% if messages %}                           <!-- check if there are any messages -->
-                {% for message in messages %}           <!-- loop through the messages -->
-                    <p class="email-message">{{message}}</p>                  <!-- display each message in a paragraph tag -->
-                {% endfor %}
-            {% endif %}
-        {% endwith %}
-        <form action="/login" method="post" class="register-form">
-            <label for="login-email" class="lbl-register">Email: </label>
-            <input type="text" name="login-email" id="login-email" class="input-login-data">
-            <label for="login-password" class="lbl-register">Password: </label>
-            <input type="password" name="login-password" id="login-password" class="input-login-data">
-            <button type="submit" id="Login" class="btn btn-success btn-login">Login</button>
-        </form>
-    </div>
-    </div>
+    
 </body>
 </html>

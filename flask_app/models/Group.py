@@ -27,25 +27,53 @@ class Group:
 
     @classmethod
     def save(cls,data):
-        query = "INSERT INTO WritingGroups (name, description, short_description, founding_date, "\
-            "creator_id, genre_id) VALUES (%(name)s, %(description)s, %(short_description)s, %(founding_date)s, "\
-            "%(creator_id)s, %(genre_id)s);"
-        group_id = MySQLConnection(dbName).query_db( query, data )
-        print(f"group insertion returned {group_id}")
-        # group_id should have come back from the query
-        author_id = data['creator_id']
-        data = {
-            'group_id': group_id,
-            'author_id': author_id
-        }
+        _data = [
+            data['name'],
+            data['description'],
+            data['short_description'],
+            data['founding_date'],
+            data['creator_id'],
+            data['genre_id']
+        ]
+        results = MySQLConnection(dbName).call_proc('create_group',_data)
+        print(f"value returned results = {results}")
+        if (results == False):
+            print(f"value {results} fell into False")
+            return False
+        else:
+            # it worked. Now go back and get the member from the db
+            _Group = Author(results[0])
+
         # creator of the group is the first member
-        query = "INSERT INTO GroupMembers(group_id, author_id) VALUES (%(group_id)s, %(author_id)s);"
-        return MySQLConnection(dbName).query_db( query, data )
+        _data = [
+            _Group.id,
+            data['author_id']
+        ]
+        results = MySQLConnection(dbName).call_proc('join_group',_data)
+        print(f"value returned results = {results}")
+        if (results == False):
+            print(f"value {results} fell into False")
+            return False
+        else:
+            # it worked. Now go back and get the member from the db
+            # NOTE: not sure if this is right, just return the row we just made in the GroupMembership table
+            return results[0]
 
     @classmethod
     def join(cls,data):
-        query = "INSERT INTO GroupMembers(group_id, author_id) VALUES (%(group_id)s, %(author_id)s);"
-        return MySQLConnection(dbName).query_db( query, data )
+        _data = [
+            data['Group.id'],
+            data['author_id']
+        ]
+        results = MySQLConnection(dbName).call_proc('join_group',_data)
+        print(f"value returned results = {results}")
+        if (results == False):
+            print(f"value {results} fell into False")
+            return False
+        else:
+            # it worked. Now go back and get the member from the db
+            # NOTE: not sure if this is right, just return the row we just made in the GroupMembership table
+            return results[0]
 
     @classmethod
     def is_member(cls,data):
@@ -95,7 +123,7 @@ class Group:
             data = {
                 'id': this_group.id
             }
-            this_group.members = Author.get_group_members(data)
+            this_group.members = Group.get_group_members(data)
             this_group.member_count = len(this_group.members)
             Groups.append(this_group)
         return Groups
@@ -117,6 +145,17 @@ class Group:
                 "short_description = %(short_description)s, founding_date = %(founding_date)s, "\
                 "WHERE id = %(id)s;"
         return MySQLConnection(dbName).query_db( query, data )
+
+    @classmethod
+    def get_group_members(cls,data):
+        query = "SELECT Authors.* FROM Authors LEFT JOIN GroupMembers "\
+                "ON authors.id = GroupMembers.author_id LEFT JOIN WritingGroups ON GroupMembers.Group_id = "\
+                "WritingGroups.id WHERE WritingGroups.id = %(id)s;"
+        members = []
+        results = MySQLConnection(dbName).query_db( query, data )
+        for result in results:
+            members.append(Author(result))
+        return members
 
     @staticmethod
     def validate(data):

@@ -10,7 +10,7 @@ bcrypt = Bcrypt(app)
 
 @app.route('/')
 def registration():
-    return render_template("index.html")
+    return render_template("register.html")
 
 @app.route('/register', methods=['POST'])
 def register():
@@ -27,7 +27,7 @@ def register():
     if (oAuthor == False):
         # return to the registration but we have to tell them something
         return redirect('/')
-    session['id'] = oAuthor.id
+    session['Author_id'] = oAuthor.id
     session['firstname'] = oAuthor.first_name
     session['lastname'] = oAuthor.last_name
     session['username'] = oAuthor.username

@@ -23,30 +23,27 @@ class Author:
 
     @classmethod
     def save(cls,data):
-        print("in save method")
-        print(data['username'])
-        print(data['email'])
-        print(data['firstname'])
-        print(data['lastname'])
-        print(data['password'])
-        _data = {
+        data['@id']=0
+        _data = [
             data['username'],
             data['email'],
             data['firstname'],
             data['lastname'],
             data['password']
-        }
-        _id = MySQLConnection(dbName).call_proc('create_author',_data)
-        if (_id == False):
+        ]
+        results = MySQLConnection(dbName).call_proc('create_author',_data)
+        print(f"value returned results = {results}")
+        if (results == False):
+            print(f"value {results} fell into False")
             return False
         else:
             # it worked. Now go back and get the member from the db
-            _data = {
-                _id
-            }
-            _author = MySQLConnection(dbName).call_proc('get_author_by_id',_data)
+            print(f"fell into success with value result = {results}")
+            # _data = [data['username']]
+            # results = MySQLConnection(dbName).call_proc('get_author_by_username',_data)
+            _author = Author(results[0])
             return _author
-            
+
     @classmethod
     def login(cls,data):
         query = "SELECT * FROM Authors WHERE email = %(email)s;"
@@ -54,35 +51,36 @@ class Author:
 
     @classmethod
     def get_Author_by_email(cls,data):
-        query = "SELECT * FROM Authors WHERE email = %(email)s;"
-        result = MySQLConnection(dbName).query_db( query, data )
-        print(result)
-        if len(result) <= 0:
-            print('get_Author_by_email Returned False')
-            return False
-        return cls(result[0])
+            _data = [data['email']]
+            results = MySQLConnection(dbName).call_proc('get_author_by_email',_data)
+            print(f"value returned results = {results}")
+            if (results == False) or (results == ()):
+                return False
+            else:
+                _author = Author(results[0])
+                return _author
 
     @classmethod
     def get_Author_by_id(cls,data):
-        query = "SELECT * FROM Authors WHERE id = %(Author_id)s;"
-        print(f"get_Author_by_id query = {query}")
-        result = MySQLConnection(dbName).query_db( query, data )
-        if len(result) <= 0:
-            print('get_Author_by_id Returned False')
-            return False
-        return cls(result[0])
+            _data = [data['id']]
+            results = MySQLConnection(dbName).call_proc('get_author_by_id',_data)
+            print(f"value returned results = {results}")
+            if (results == False) or (results == ()):
+                return False
+            else:
+                _author = Author(results[0])
+                return _author
 
     @classmethod
-    def get_group_members(cls,data):
-        query = "SELECT Authors.* FROM Authors LEFT JOIN GroupMembers "\
-                "ON authors.id = GroupMembers.author_id LEFT JOIN WritingGroups ON GroupMembers.Group_id = "\
-                "WritingGroups.id WHERE WritingGroups.id = %(id)s;"
-        members = []
-        results = MySQLConnection(dbName).query_db( query, data )
-        for result in results:
-            members.append(cls(result))
-        return members
-
+    def get_Author_by_username(cls,data):
+            _data = [data['username']]
+            results = MySQLConnection(dbName).call_proc('get_author_by_username',_data)
+            print(f"value returned results = {results}")
+            if (results == False) or (results == ()):
+                return False
+            else:
+                _author = Author(results[0])
+                return _author
 
     @staticmethod
     def validate(data):
