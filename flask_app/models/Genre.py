@@ -1,5 +1,5 @@
 from flask_app.config.mySQLConnection import MySQLConnection, connectToMySQL
-from flask import flash
+from flask import json
 from flask_app import app
 
 dbName = "workshop_schema"
@@ -9,8 +9,11 @@ class Genre:
         self.name = data['name']
         self.short_description = data['short_description']
         self.description = data['description']
-        self.created_at = data['created_at']
-        self.updated_at = data['updated_at']
+        self.created_at = str(data['created_at'])
+        self.updated_at = str(data['updated_at'])
+
+    def toJson(self):
+        return json.dumps(self, default=lambda o: o.__dict__)
 
     @classmethod
     def save(cls,data):

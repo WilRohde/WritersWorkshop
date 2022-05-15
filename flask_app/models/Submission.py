@@ -1,5 +1,5 @@
 from flask_app.config.mySQLConnection import MySQLConnection, connectToMySQL
-from flask import flash
+from flask import json
 from flask_app import app
 from flask_app.models.Author import Author
 from flask_app.models.Group import Group
@@ -12,14 +12,17 @@ class Submission:
         self.title = data['title']
         self.description = data['description']
         self.data = data['data']
-        self.created_at = data['created_at']
-        self.updated_at = data['updated_at']
+        self.created_at = str(data['created_at'])
+        self.updated_at = str(data['updated_at'])
         self.group_id = data['Group_id']
         self.author_id = data['Author_id']
         self.review_count = 0
         self.group = None
         self.author = None
         self.reviews = None
+
+    def toJson(self):
+        return json.dumps(self, default=lambda o: o.__dict__)
 
     @classmethod
     def save(cls, data):

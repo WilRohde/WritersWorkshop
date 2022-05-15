@@ -1,5 +1,5 @@
 from flask_app.config.mySQLConnection import MySQLConnection, connectToMySQL
-from flask import flash
+from flask import json
 from flask_app import app
 from flask_bcrypt import Bcrypt
 import re
@@ -18,8 +18,11 @@ class Author:
         self.first_name = data['firstname']
         self.last_name = data['lastname']
         self.password = data['password']
-        self.created_at = data['created_at']
-        self.update_at = data['updated_at']
+        self.created_at = str(data['created_at'])
+        self.update_at = str(data['updated_at'])
+
+    def toJson(self):
+        return json.dumps(self, default=lambda o: o.__dict__)
 
     @classmethod
     def save(cls,data):
@@ -50,9 +53,20 @@ class Author:
         return MySQLConnection(dbName).query_db( query, data )
 
     @classmethod
-    def get_Author_by_email(cls,data):
-            _data = [data['email']]
+    def get_Author_by_credential(cls,data):
+        if EMAIL_REGEX.match(data['credential']):
+            # signing in with e-mail
+            _data = [data['credential']]
             results = MySQLConnection(dbName).call_proc('get_author_by_email',_data)
+            print(f"value returned results = {results}")
+            if (results == False) or (results == ()):
+                return False
+            else:
+                _author = Author(results[0])
+                return _author
+        else:
+            _data = [data["credential"]]
+            results = MySQLConnection(dbName).call_proc('get_author_by_username',_data)
             print(f"value returned results = {results}")
             if (results == False) or (results == ()):
                 return False

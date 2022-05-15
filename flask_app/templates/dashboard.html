@@ -9,20 +9,25 @@
     <link rel='stylesheet' type='text/css' href='{{ url_for('static', filename='/css/style.css') }}'>
     <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
-    <link rel="import" type="script" href='{{ url_for('static', filename='/src/load-react.js') }}'>
-    <link rel="import" type="script" href='{{ url_for('static', filename='/src/Genre.js') }}'>
-    <link rel="import" type="script" href='{{ url_for('static', filename='/src/WorkshopHeader.js') }}'>
+    <link rel="script" type="script" href='{{ url_for('static', filename='/src/load-react.js') }}'>
+    <link rel="import" type="script" href='{{ url_for('static', filename='/src/Group.js') }}'>
     <title>Writer's Workshop</title>
 </head>
-<body>
+<body onload="loadGroups('firstname')">
     <div class="workshop-header">
+        <h1 class="h1-workshop">Welcome Back {{session['firstname']}}</h1>
+        <div class="workshop-header-btns">
+            <form action="/genre/new"><button type="submit" class="btn-warning btn-workshop">Create a New Genre</button></form>
+            <form action="/group/new"><button type="submit" class="btn-primary btn-workshop">Create a New Group</button></form>
+            <form action="/logout"><button type="submit" class="btn-primary btn-workshop">Logout</button></form>
+        </div> 
     </div>
     <br>
     <h2 class="h2-workshop">Available Groups</h2>
     <br>
     <div class="workshop-list" id="group-list">
         {% for group in groups %}
-            <!-- <p><a href="/group/{{group.id}}">{{group.name}}</a> founded {{group.founding_date}} by {{group.creator.first_name}} {{group.creator.last_name}}  {{group.member_count}} members</p> -->
+            <p><a href="/group/{{group.id}}">{{group.name}}</a> founded {{group.founding_date}} by {{group.creator.first_name}} {{group.creator.last_name}}  {{group.member_count}} members</p>
         {% endfor %}
     </div>
     <br>
@@ -30,7 +35,7 @@
     <br>
     <div class="workshop-list" id="genre-list">
         {% for genre in genres %}
-        <!-- <p>{{genre.name}} -- {{genre.short_description}}</p> -->
+        <p>{{genre.name}} -- {{genre.short_description}}</p>
         {% endfor %}
     </div>
     <br>
@@ -43,3 +48,11 @@
     </div>
 </body>
 </html>
+<script>
+    function loadGroups() {
+    const domContainer = document.querySelector('#group-list');
+    const root = ReactDom.CreateRoot(domContainer);
+    root.render(e(Group))
+    debug.log('got to loadGroups()')
+}
+</script>

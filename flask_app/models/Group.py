@@ -1,6 +1,6 @@
 from operator import is_
+from flask import json
 from flask_app.config.mySQLConnection import MySQLConnection, connectToMySQL
-from flask import flash
 from flask_app import app
 from flask_app.models.Author import Author
 from flask_app.models.Genre import Genre
@@ -14,16 +14,20 @@ class Group:
         self.name = data['name']
         self.description = data['description']
         self.short_description = data['short_description']
-        self.created_at = data['created_at']
-        self.updated_at = data['updated_at']
-        founding_date = data['founding_date']
-        self.founding_date = DateFormat.format_date(founding_date)
+        self.created_at = str(data['created_at'])
+        self.updated_at = str(data['updated_at'])
+        # founding_date = data['founding_date']
+        # self.founding_date = str(DateFormat.format_date(founding_date))
+        self.founding_date = str(data['founding_date'])
         self.creator_id = data['Creator_id']
         self.genre_id = data['Genre_id']
         self.genre = data['GenreName']
         self.member_count = 0
         self.creator = None
         self.members = []
+
+    def toJson(self):
+        return json.dumps(self, default=lambda o: o.__dict__)
 
     @classmethod
     def save(cls,data):

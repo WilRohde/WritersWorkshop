@@ -241,3 +241,7 @@
     display: flex;
     flex-direction: column;
 }
+.click-home {
+    color: yellow;
+    margin-left: 10%;
+}
