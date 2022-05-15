@@ -50,3 +50,6 @@ print(groupJSONData)
 print("Decode JSON formatted Data")
 groupJSON = json.loads(groupJSONData)
 print(groupJSON)
+
+groupJSONData_mod = groupJSONData.replace('\"','')
+print(groupJSONData_mod)
