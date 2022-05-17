@@ -1,3 +1,4 @@
+DELIMITER $$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `update_genre`(
 	IN id INT,
 	IN short_description VARCHAR(45),
@@ -19,4 +20,5 @@ BEGIN
 			description = description WHERE Genres.id = id;
         SELECT * FROM Genres WHERE Genres.id = id;
 	COMMIT;
-END
+END$$
+DELIMITER ;

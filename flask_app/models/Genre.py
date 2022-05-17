@@ -1,5 +1,5 @@
 from flask_app.config.mySQLConnection import MySQLConnection, connectToMySQL
-from flask import json
+from flask import json, flash
 from flask_app import app
 
 dbName = "workshop_schema"

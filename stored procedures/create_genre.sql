@@ -1,3 +1,4 @@
+DELIMITER $$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `create_genre`(
 	IN name VARCHAR(255),
     IN short_description VARCHAR(45),
@@ -20,4 +21,5 @@ BEGIN
         SET new_identity = LAST_INSERT_ID();
         SELECT * FROM Genres WHERE id = new_identity;
 	COMMIT;
-END
+END$$
+DELIMITER ;

@@ -1,3 +1,4 @@
+DELIMITER $$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `get_genre_by_id`(
 	IN id INT
     )
@@ -9,4 +10,5 @@ BEGIN
 	END;
     START TRANSACTION;
 		SELECT * FROM Genres WHERE Genres.id = id;
-END
+END$$
+DELIMITER ;

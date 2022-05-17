@@ -1,3 +1,4 @@
+DELIMITER $$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `get_author_by_id`(
 	IN id INT
 )
@@ -9,4 +10,5 @@ BEGIN
 	END;
     START TRANSACTION;
 		SELECT * FROM authors WHERE authors.id = id;
-END
+END$$
+DELIMITER ;

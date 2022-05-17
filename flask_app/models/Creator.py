@@ -13,6 +13,10 @@ class Creator:
     
     @classmethod
     def get(cls, data):
-        query = "SELECT id, email, firstname, lastname FROM Authors WHERE id=%(Creator_id)s;"
-        results = MySQLConnection(dbName).query_db( query, data )
+        _data = {
+            data['Creator_id']
+        }
+        results = MySQLConnection(dbName).call_proc('get_creator',_data)
+        if len(results) < 1:
+            return False
         return cls(results[0])

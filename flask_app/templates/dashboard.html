@@ -7,63 +7,113 @@
     <link rel='stylesheet' type='text/css' href='{{ url_for('static', filename='/css/bootstrap.css') }}'>
     <link rel='stylesheet' type='text/css' href='{{ url_for('static', filename='/css/bootstrap.min.css') }}'>
     <link rel='stylesheet' type='text/css' href='{{ url_for('static', filename='/css/style.css') }}'>
+    <link rel='stylesheet' type='text/css' href='{{ url_for('static', filename='/css/newstyle.css') }}'>
     <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
     <link rel="script" type="script" href='{{ url_for('static', filename='/src/load-react.js') }}'>
     <link rel="import" type="script" href='{{ url_for('static', filename='/src/Group.js') }}'>
     <title>Writer's Workshop</title>
 </head>
-<body onload="loadReact()">
-    <div class="workshop-header">
-        <h1 class="h1-workshop">Welcome Back {{session['firstname']}}</h1>
-        <div class="workshop-header-btns">
-            <form action="/genre/new"><button type="submit" class="btn-warning btn-workshop">Create a New Genre</button></form>
-            <form action="/group/new"><button type="submit" class="btn-primary btn-workshop">Create a New Group</button></form>
-            <form action="/logout"><button type="submit" class="btn-primary btn-workshop">Logout</button></form>
-        </div> 
+<body>
+<div class="workshop-header">
+    <h1 class="h1-workshop">Welcome Back {{session['firstname']}}</h1>
+    <!-- <div class="workshop-header-btns">
+        <form action="/genre/new"><button type="submit" class="btn-warning btn-workshop">Create a New Genre</button></form>
+        <form action="/group/new"><button type="submit" class="btn-primary btn-workshop">Create a New Group</button></form>
+        <form action="/logout"><button type="submit" class="btn-primary btn-workshop">Logout</button></form>
+    </div>  -->
+</div>
+<div class="workshop-menus">
+    <div>
+        <div class="dropdown">
+            <button class="dropbtn">Your Profile</button>
+            <div class="dropdown-content">
+                <a href="#">Upgrade to Premium</a>
+                <a href="#">View your profile</a>
+                <a href="Logout">Logout</a>
+            </div>
+        </div>
     </div>
-    <br>
-    <h2 class="h2-workshop">Available Groups</h2>
-    <br>
-    <div class="workshop-list" id="group-list">
-        {% for group in groups %}
-            <p><a href="/group/{{group.id}}">{{group.name}}</a> founded {{group.founding_date}} by {{group.creator.first_name}} {{group.creator.last_name}}  {{group.member_count}} members</p>
+    <div class="dropdown">
+        <button class="dropbtn">Community</button>
+        <div class="dropdown-content">
+            <a href="/genre/new">Create a new Genre</a>
+            <a href="/group/new">Create a new Group</a>
+            <a href="#">Submit your work</a>
+            <a href="#">Browse user submissions</a>
+        </div>
+    </div>
+</div>
+<br>
+{% with messages = get_flashed_messages() %}    <!-- declare a variable called messages -->
+    {% if messages %}                           <!-- check if there are any messages -->
+        {% for message in messages %}           <!-- loop through the messages -->
+            <p class="dashboard-message">{{message}}</p>                  <!-- display each message in a paragraph tag -->
         {% endfor %}
+    {% endif %}
+{% endwith %}
+<div class="dashboard-master">
+    <div class="main-column">
+        <!-- <h2>Available Genres</h2>
+        <br> -->
+        <!-- <div class="workshop-list" id="genre-list">
+            {% for genre in genres %}
+            <div class='group-box'>
+                <h4>{{genre.name}}</h4>
+                <br>
+                <p>{{genre.description}}</p>
+            </div>
+            {% endfor %}
+        </div>
+        <br> -->
+        <h2>Your Submissions</h2>
+        <br>
+        <div class="workshop-list">
+            {% for submission in submissions %}
+                <p><a href="/submit/review/{{submission.id}}">{{submission.title}}</a>     {{submission.review_count}} Reviews</p>
+            {% endfor %}
+        </div>
     </div>
-    <br>
-    <h2 class="h2-workshop">Available Genres</h2>
-    <br>
-    <div class="workshop-list" id="genre-list">
-        {% for genre in genres %}
-        <p>{{genre.name}} -- {{genre.short_description}}</p>
-        {% endfor %}
+    <div class="right-column">
+        <h2>Available Groups</h2>
+        <br>
+        <div class="workshop-list" id="group-list">
+            {% for group in groups %}
+                <div class='group-box'>
+                    <h4>{{group.name}}</h4>
+                    <p>founded by {{group.creator.first_name}} {{group.creator.last_name}}</p>
+                    <p>This group has {{group.member_count}} members</p>
+                    <a href="#">Visit this group</a>
+                    <form action="/group/join/{{group.id}}" class="group-button">
+                        <input type="submit" value="Join" class="btn-success">
+                    </form>
+                </div>
+            {% endfor %}
+        </div>
     </div>
-    <br>
-    <h2 class="h2-workshop">Your Submissions</h2>
-    <br>
-    <div class="workshop-list">
-        {% for submission in submissions %}
-            <p><a href="/submit/review/{{submission.id}}">{{submission.title}}</a>     {{submission.review_count}} Reviews</p>
-        {% endfor %}
-    </div>
+</div>
 </body>
 </html>
 <script>
     function loadReact() {
         console.log("got to loadReact()")
-        loadGroups()
+        //loadGroups()
     }
     function loadGroups() {
         console.log('got to loadGroups()')
         const domContainer = document.querySelector('#group-list');
         const root = ReactDOM.createRoot(domContainer);
-        root.render(e(Group))
+        root.render(Group)
 }
 function testFunction(data) {
         console.log(data)
-        test_groups = {{_groups}}
+        test_groups = data
         console.log("printing test_groups")
-        console.log(test_groups)
+        for (var k = 0; k <= test_groups.length; k++){
+            test_group = test_groups[k]
+            console.log(test_group)
+        }
     }
 testFunction({{ _groups|safe }})
+
 </script>

@@ -24,6 +24,11 @@ def join(id):
         'group_id': id,
         'author_id': session['Author_id']
     }
+    # make sure author isn't already a member
+    if (Group.is_member(data)):
+        flash("You are already a member of this group.")
+        return redirect('/dashboard')
+
     Group.join(data)
     data = {
         'id': id
@@ -48,6 +53,11 @@ def create_group():
         'description': request.form['description'],
         'creator_id': session['Author_id']
     }
+    # make sure the group doesn't already exist
+    if (Group.is_group(data)):
+        flash("A group by this name already exists","Group")
+        return redirect('/group/new')
+
     Group.save(data)
     return redirect('/dashboard')
 

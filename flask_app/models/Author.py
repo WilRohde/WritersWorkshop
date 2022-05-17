@@ -1,5 +1,5 @@
 from flask_app.config.mySQLConnection import MySQLConnection, connectToMySQL
-from flask import json
+from flask import json, flash
 from flask_app import app
 from flask_bcrypt import Bcrypt
 import re
@@ -73,6 +73,19 @@ class Author:
             else:
                 _author = Author(results[0])
                 return _author
+
+    @classmethod
+    def get_Author_by_email(cls,data):
+        _data = [
+            data['email']
+        ]
+        results = MySQLConnection(dbName).call_proc('get_author_by_email',_data)
+        print(f"value returned results = {results}")
+        if (results == False) or (results == ()):
+            return False
+        else:
+            _author = Author(results[0])
+            return _author
 
     @classmethod
     def get_Author_by_id(cls,data):

@@ -1,3 +1,4 @@
+DELIMITER $$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `create_invitation`(
 	IN group_leader_id INT,
     IN invitee_id INT,
@@ -13,4 +14,5 @@ BEGIN
 		INSERT INTO Invitations (group_leader_id, invitee_id, group_id) 
         VALUES (group_leader_id, invitee_id, group_id);
 	COMMIT;
-END
+END$$
+DELIMITER ;

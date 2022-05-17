@@ -1,3 +1,4 @@
+DELIMITER $$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `create_review`(
 	IN reviewer_id INT,
     IN submission_id INT,
@@ -14,4 +15,5 @@ BEGIN
 		INSERT INTO Reviews (title, review_text, rating, Submission_id, Reviewer_id) 
         VALUES (title, review_text, rating, reviewer_id, submission_id);
 	COMMIT;
-END
+END$$
+DELIMITER ;

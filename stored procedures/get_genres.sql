@@ -1,3 +1,4 @@
+DELIMITER $$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `get_genres`()
 BEGIN
 	DECLARE exit handler for sqlexception, sqlwarning
@@ -7,4 +8,5 @@ BEGIN
 	END;
     START TRANSACTION;
 		SELECT * FROM Genres;
-END
+END$$
+DELIMITER ;

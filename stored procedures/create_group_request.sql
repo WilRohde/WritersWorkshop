@@ -1,3 +1,4 @@
+DELIMITER $$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `create_group_request`(
 	IN requestor_id INT,
     IN group_id INT

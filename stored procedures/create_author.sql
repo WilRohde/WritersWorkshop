@@ -1,3 +1,4 @@
+DELIMITER $$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `create_author`(
 	IN username VARCHAR(45),
 	IN email VARCHAR(45),
@@ -21,4 +22,5 @@ BEGIN
         SET new_identity = LAST_INSERT_ID();
         SELECT * FROM Authors WHERE id = new_identity;
 	COMMIT;
-END
+END$$
+DELIMITER ;

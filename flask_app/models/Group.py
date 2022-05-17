@@ -1,5 +1,7 @@
+from msilib.schema import Class
 from operator import is_
-from flask import json
+from tokenize import group
+from flask import json, flash, session
 from flask_app.config.mySQLConnection import MySQLConnection, connectToMySQL
 from flask_app import app
 from flask_app.models.Author import Author
@@ -21,7 +23,7 @@ class Group:
         self.founding_date = str(data['founding_date'])
         self.creator_id = data['Creator_id']
         self.genre_id = data['Genre_id']
-        self.genre = data['GenreName']
+        self.genre = data['name']
         self.member_count = 0
         self.creator = None
         self.members = []
@@ -35,7 +37,6 @@ class Group:
             data['name'],
             data['description'],
             data['short_description'],
-            data['founding_date'],
             data['creator_id'],
             data['genre_id']
         ]
@@ -46,12 +47,12 @@ class Group:
             return False
         else:
             # it worked. Now go back and get the member from the db
-            _Group = Author(results[0])
+            _Group = Group(results[0])
 
         # creator of the group is the first member
         _data = [
             _Group.id,
-            data['author_id']
+            session['Author_id']
         ]
         results = MySQLConnection(dbName).call_proc('join_group',_data)
         print(f"value returned results = {results}")
@@ -66,7 +67,7 @@ class Group:
     @classmethod
     def join(cls,data):
         _data = [
-            data['Group.id'],
+            data['group_id'],
             data['author_id']
         ]
         results = MySQLConnection(dbName).call_proc('join_group',_data)
@@ -81,8 +82,12 @@ class Group:
 
     @classmethod
     def is_member(cls,data):
-        query = "SELECT * FROM GroupMembers where group_id = %(group_id)s AND author_id=%(author_id)s;"
-        results = MySQLConnection(dbName).query_db( query, data )
+        _data = [
+            data['group_id'],
+            data['author_id']
+        ]
+        results = MySQLConnection(dbName).call_proc('author_is_member',_data)
+        # NOTE: have to test this don't trust it
         if len(results) > 0:
             return True
         else:
@@ -90,76 +95,111 @@ class Group:
 
     @classmethod
     def get_by_id(cls,data):
-        query = "SELECT WritingGroups.*, Genres.name as GenreName FROM WritingGroups LEFT JOIN Genres "\
-                " ON WritingGroups.genre_id = Genres.id WHERE WritingGroups.id = %(id)s;"
-        result = MySQLConnection(dbName).query_db( query, data )
-        if len(result) < 1:
+        _data = [
+            data['group.id']
+        ]
+        results = MySQLConnection(dbName).call_proc('author_is_member',_data)
+        if len(results) < 1:
             return False
-        group = cls(result[0])
-        data = {
-            'Creator_id': group.creator_id
-        }
-        group.creator = Creator.get(data)
+        group = cls(results[0])
+        _data = [
+            group.creator_id
+        ]
+        group.creator = Creator.get(_data)
         #group.creator = Author.get_Author_by_id(data)
-        data = {
-            'id': group.id
-        }
-        group.members = Author.get_group_members(data)
+        _data = [
+            group.id
+        ]
+        group.members = Group.get_group_members(_data)
         group.member_count = len(group.members)
         return group
 
     @classmethod
+    def is_group(cls,data):
+        _data = [
+            data['name']
+        ]
+        results = MySQLConnection(dbName).call_proc('get_group_by_name',_data)
+        # NOTE: have to test this don't trust it
+        if len(results) > 0:
+            return True
+        else:
+            return False
+
+    @classmethod
     def get_all(cls):
-        query = "SELECT WritingGroups.*, Genres.name as GenreName FROM WritingGroups "\
-                "LEFT JOIN Genres ON WritingGroups.genre_id = Genres.id;"
-        results = MySQLConnection(dbName).query_db( query )
+        # query = "SELECT WritingGroups.*, Genres.name as GenreName FROM WritingGroups "\
+        #         "LEFT JOIN Genres ON WritingGroups.genre_id = Genres.id;"
+        # results = MySQLConnection(dbName).query_db( query )
+        results = MySQLConnection(dbName).call_proc('get_groups')
         Groups = []
         if results == False:
             return Groups
 
         for result in results:
             this_group = cls(result)
+            print(f"this_group.id = {this_group.id}")
             data = {
                 'Creator_id': this_group.creator_id
             }
+            print(f"value of data is = {data}")
             #this_group.creator = Author.get_Author_by_id(data)
             this_group.creator = Creator.get(data)
+            # NOTE: 05/16/2022 - don't load members here but need to do later
             data = {
                 'id': this_group.id
             }
-            this_group.members = Group.get_group_members(data)
-            this_group.member_count = len(this_group.members)
+            # print(f"value of data = {data}")
+            # this_group.members = Group.get_group_members(data)
+            this_group.member_count = Group.get_member_count(data)
             Groups.append(this_group)
         return Groups
 
     @classmethod
-    def delete(cls,data):
-        # delete the members first
-        query = "DELETE FROM GroupMembers WHERE group_id = %(id)s;"
-        deleted = MySQLConnection(dbName).query_db( query, data )
+    def get_member_count(cls,data):
+        _data = [
+            data['id']
+        ]
+        results = MySQLConnection(dbName).call_proc('get_group_member_count',_data)
+        if (results == False) or (len(results)==0):
+            print(f"value {results} fell into False")
+            return 0
+        else:
+            print(f"get_member_count returned {results}")
+            result = results[0]
+            return result['member_count']
 
-        # now delete the group
-        query = "DELETE FROM WritingGroups WHERE id = %(id)s;"
-        return MySQLConnection(dbName).query_db( query, data )
-    
     @classmethod
     def update(cls, data):
         # NOTE: you cannot change/update the group's creator
-        query = "UPDATE WritingGroups SET name = %(name)s, description = %(description)s, "\
-                "short_description = %(short_description)s, founding_date = %(founding_date)s, "\
-                "WHERE id = %(id)s;"
-        return MySQLConnection(dbName).query_db( query, data )
+        # NOTE: 05/15/2022 need to test this!
+        _data = [
+            data['id'],
+            data['name'],
+            data['description'],
+            data['short_description'],
+            data['founding_date']
+        ]
+        return MySQLConnection(dbName).call_proc('update_group',_data)
 
     @classmethod
     def get_group_members(cls,data):
-        query = "SELECT Authors.* FROM Authors LEFT JOIN GroupMembers "\
-                "ON authors.id = GroupMembers.author_id LEFT JOIN WritingGroups ON GroupMembers.Group_id = "\
-                "WritingGroups.id WHERE WritingGroups.id = %(id)s;"
         members = []
+        _data = [
+            data['id']
+        ]
+        results = MySQLConnection(dbName).call_proc('get_group_members',_data)
+        # query = "SELECT Authors.firstname, Authors.lastname FROM Authors LEFT JOIN GroupMembers " \
+        #         "ON authors.id = GroupMembers.author_id LEFT JOIN WritingGroups " \
+        #         "ON GroupMembers.Group_id = WritingGroups.id WHERE WritingGroups.id = %(id)s;"
         results = MySQLConnection(dbName).query_db( query, data )
-        for result in results:
-            members.append(Author(result))
-        return members
+        if (results == False) or (len(results)==0):
+            print(f"value {results} fell into False")
+            return False
+        else:
+            for result in results:
+                members.append(Member(result))
+            return members
 
     @staticmethod
     def validate(data):
@@ -180,3 +220,8 @@ class Group:
             flash("Group Founding Date is Required","Group")
             is_Valid = False
         return is_Valid
+
+class Member:
+    def __init__(self, data):
+        self.firstname = data['firstname']
+        self.lastname = data['lastname']

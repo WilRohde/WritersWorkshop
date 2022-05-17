@@ -73,7 +73,7 @@ def home():
         groupjsondata = json.dumps(group.toJson(), indent=4)
         groupjson = json.loads(groupjsondata)
         ogroups.append(groupjson)
-    return render_template('dashboard.html', groups=Group.get_all(), submissions=Submission.get_all(data), genres=Genre.get_all(), _groups=ogroups)
+    return render_template('dashboard.html', groups=Group.get_all(), submissions=Submission.get_all(data), genres=Genre.get_all())
 
 @app.route('/logout')
 def logout():
