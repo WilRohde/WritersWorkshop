@@ -39,7 +39,7 @@
         <div class="dropdown-content">
             <a href="/genre/new">Create a new Genre</a>
             <a href="/group/new">Create a new Group</a>
-            <a href="#">Submit your work</a>
+            <a href="/submit/new">Submit your work</a>
             <a href="#">Browse user submissions</a>
         </div>
     </div>
@@ -54,18 +54,6 @@
 {% endwith %}
 <div class="dashboard-master">
     <div class="main-column">
-        <!-- <h2>Available Genres</h2>
-        <br> -->
-        <!-- <div class="workshop-list" id="genre-list">
-            {% for genre in genres %}
-            <div class='group-box'>
-                <h4>{{genre.name}}</h4>
-                <br>
-                <p>{{genre.description}}</p>
-            </div>
-            {% endfor %}
-        </div>
-        <br> -->
         <h2>Your Submissions</h2>
         <br>
         <div class="workshop-list">
@@ -83,10 +71,7 @@
                     <h4>{{group.name}}</h4>
                     <p>founded by {{group.creator.first_name}} {{group.creator.last_name}}</p>
                     <p>This group has {{group.member_count}} members</p>
-                    <a href="#">Visit this group</a>
-                    <form action="/group/join/{{group.id}}" class="group-button">
-                        <input type="submit" value="Join" class="btn-success">
-                    </form>
+                    <p><a href="/group/{{group.id}}">Visit this group</a>     <a href="/group/join/{{group.id}}">Join this group</a></p>
                 </div>
             {% endfor %}
         </div>
@@ -94,7 +79,7 @@
 </div>
 </body>
 </html>
-<script>
+<!-- <script>
     function loadReact() {
         console.log("got to loadReact()")
         //loadGroups()
@@ -116,4 +101,4 @@ function testFunction(data) {
     }
 testFunction({{ _groups|safe }})
 
-</script>
+</script> -->

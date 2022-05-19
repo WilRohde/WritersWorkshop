@@ -79,3 +79,20 @@ def home():
 def logout():
     session.clear()
     return redirect('/')
+
+@app.route('/api/author/<username>')
+def author_by_username(username):
+    data = {
+        'username': username
+    }
+    author = Author.get_Author_by_username(data)
+    authorDict = {
+        'id': author.id,
+        'firstname': author.first_name,
+        'lastname': author.last_name,
+        'email': author.email,
+        'username': author.username,
+        'created_at': author.created_at,
+        'updated_at': author.update_at
+    }
+    return authorDict

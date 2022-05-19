@@ -8,6 +8,7 @@ from flask_app.models.Author import Author
 from flask_app.models.Genre import Genre
 from flask_app.models.Creator import Creator
 from flask_app.models.Dateformat import DateFormat
+from flask_app.models.Member import Member
 
 dbName = "workshop_schema"
 class Group:
@@ -23,7 +24,7 @@ class Group:
         self.founding_date = str(data['founding_date'])
         self.creator_id = data['Creator_id']
         self.genre_id = data['Genre_id']
-        self.genre = data['name']
+        self.genre = data['name'] #NOTE: this CANNOT be right 05/18/2022
         self.member_count = 0
         self.creator = None
         self.members = []
@@ -52,7 +53,7 @@ class Group:
         # creator of the group is the first member
         _data = [
             _Group.id,
-            session['Author_id']
+            data['creator_id']
         ]
         results = MySQLConnection(dbName).call_proc('join_group',_data)
         print(f"value returned results = {results}")
@@ -96,21 +97,21 @@ class Group:
     @classmethod
     def get_by_id(cls,data):
         _data = [
-            data['group.id']
+            data['group_id']
         ]
-        results = MySQLConnection(dbName).call_proc('author_is_member',_data)
-        if len(results) < 1:
+        results = MySQLConnection(dbName).call_proc('get_group_by_id',_data)
+        if (results == False) or len(results) < 1:
             return False
         group = cls(results[0])
-        _data = [
-            group.creator_id
-        ]
-        group.creator = Creator.get(_data)
+        data = {
+            'Creator_id': group.creator_id
+        }
+        group.creator = Creator.get(data)
         #group.creator = Author.get_Author_by_id(data)
-        _data = [
-            group.id
-        ]
-        group.members = Group.get_group_members(_data)
+        data = {
+            'id': group.id
+        }
+        group.members = Group.get_group_members(data)
         group.member_count = len(group.members)
         return group
 
@@ -192,7 +193,7 @@ class Group:
         # query = "SELECT Authors.firstname, Authors.lastname FROM Authors LEFT JOIN GroupMembers " \
         #         "ON authors.id = GroupMembers.author_id LEFT JOIN WritingGroups " \
         #         "ON GroupMembers.Group_id = WritingGroups.id WHERE WritingGroups.id = %(id)s;"
-        results = MySQLConnection(dbName).query_db( query, data )
+        #results = MySQLConnection(dbName).query_db( query, data )
         if (results == False) or (len(results)==0):
             print(f"value {results} fell into False")
             return False
@@ -200,6 +201,21 @@ class Group:
             for result in results:
                 members.append(Member(result))
             return members
+
+    @classmethod
+    def get_all_for_author(cls,data):
+        groups = []
+        _data = [
+            data['id']
+        ]
+        results = MySQLConnection(dbName).call_proc('get_author_groups',_data)
+        if (results == False) or (len(results)==0):
+            print(f"value {results} fell into False")
+            return False
+        else:
+            for result in results:
+                groups.append(Group(result))
+            return groups
 
     @staticmethod
     def validate(data):
@@ -220,8 +236,3 @@ class Group:
             flash("Group Founding Date is Required","Group")
             is_Valid = False
         return is_Valid
-
-class Member:
-    def __init__(self, data):
-        self.firstname = data['firstname']
-        self.lastname = data['lastname']

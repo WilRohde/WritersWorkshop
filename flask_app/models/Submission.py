@@ -75,6 +75,8 @@ class Submission:
         query = "SELECT * FROM Submissions WHERE Group_id = %(id)s;"
         results = MySQLConnection(dbName).query_db( query, data )
         submissions = []
+        if (results == False) or (len(results) <= 0):
+            return submissions
         for result in results:
             # NOTE need to get the group and the author
             this_submission = cls(result)
@@ -83,10 +85,10 @@ class Submission:
             }
             print(f"Looking for submissions from Author_id = {this_submission.author_id}")
             this_submission.author = Author.get_Author_by_id(data)
-            data = {
-                'id': this_submission.group_id
-            }
-            this_submission.group = Group.get_by_id(data)
+            # data = {
+            #     'id': this_submission.group_id
+            # }
+            # this_submission.group = Group.get_by_id(data)
             this_submission.reviews = Review.get_by_submission(this_submission.id)
             this_submission.review_count = len(this_submission.reviews)
             submissions.append(this_submission)

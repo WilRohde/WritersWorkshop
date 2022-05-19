@@ -152,6 +152,7 @@
     flex-direction: column;
     height: 100%;
     flex: 3;
+    border: 1px white solid;
 }
 .main-column h2 {
     color: white;
@@ -161,6 +162,10 @@
     flex-direction: column;
     height: 100%;
     flex: 1;
+    border: 1px yellow solid;
+}
+.right-column h2 {
+    color: white;
 }
 .table-shows {
     width: 80%;
@@ -252,7 +257,24 @@
     border: 2px blue solid;
 }
 .h3-submit {
-    margin-left: 30%;
+    margin-left: 10%;
+    color: white;
+}
+.p-submit {
+    margin-left: 20%;
+    color: white;
+}
+.file-label {
+    margin-left: 10%;
+    color: white;
+}
+.file-submit {
+    margin-left: 10%;
+    color: white;
+}
+.file-open {
+    margin-left: 10%;
+    width: 100px;
 }
 .div-review {
     margin-left: 10%;
@@ -283,8 +305,8 @@ body {
 }
 .group-box {
     border: 2px blue solid;
-    width: 200px;
-    background-color: aqua;
+    width: 100%;
+    background-color: lightblue;
 }
 .group-button {
     position: absolute;
