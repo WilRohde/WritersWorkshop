@@ -136,17 +136,17 @@ def api_create_group():
     if group == False:
         return "An error occurred creating this group"
     else:
-        #return group_dictionary(group)
-        groupDict = {}
-        groupDict['id'] = group.id,
-        groupDict['name'] = group.name,
-        groupDict['description'] = group.description,
-        groupDict['short_description'] = group.short_description,
-        groupDict['founding_date'] = group.founding_date,
-        groupDict['created_at'] = group.created_at,
-        groupDict['updated_at'] = group.updated_at,
-        groupDict['Creator_id'] = group.creator_id,
-        groupDict['Genre_id'] = group.genre_id,
-        groupDict['Genre_name'] = group.genre
-        return groupDict
+        return group_dictionary(group)
+        # groupDict = {}
+        # groupDict['id'] = group.id,
+        # groupDict['name'] = group.name,
+        # groupDict['description'] = group.description,
+        # groupDict['short_description'] = group.short_description,
+        # groupDict['founding_date'] = group.founding_date,
+        # groupDict['created_at'] = group.created_at,
+        # groupDict['updated_at'] = group.updated_at,
+        # groupDict['Creator_id'] = group.creator_id,
+        # groupDict['Genre_id'] = group.genre_id,
+        # groupDict['Genre_name'] = group.genre
+        # return groupDict
         

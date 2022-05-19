@@ -63,7 +63,8 @@ class Group:
         else:
             # it worked. Now go back and get the member from the db
             # NOTE: not sure if this is right, just return the row we just made in the GroupMembership table
-            return results[0]
+            # NOTE: need to return the group, not this last row...05/19/22
+            return _Group
 
     @classmethod
     def join(cls,data):
