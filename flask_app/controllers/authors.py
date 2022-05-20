@@ -86,13 +86,89 @@ def author_by_username(username):
         'username': username
     }
     author = Author.get_Author_by_username(data)
+    authorDict = author_dictionary(author)
+    return authorDict
+
+@app.route('/api/register', methods=['POST'])
+def api_register():
+    results =  Author.api_validate(request.form)
+    if results['status'] == 'False':
+        result = {
+            'status': 'failure',
+            'messages': results['messages']
+        }
+        return result
+    data = {
+        "firstname": request.form['firstname'],
+        "lastname": request.form['lastname'],
+        "username": request.form['username'],
+        "email": request.form['email'],
+        "password": bcrypt.generate_password_hash(request.form['password'])
+    }
+    oAuthor = Author.save(data)
+    if (oAuthor == False):
+        # return to the registration but we have to tell them something
+        messages = {
+            'create': 'An exception occurred in Author.save(), could not create Author'
+        }
+        result = {
+            'status': 'failure',
+            'messages': messages
+            }
+        return result
+    session['Author_id'] = oAuthor.id
+    session['firstname'] = oAuthor.first_name
+    session['lastname'] = oAuthor.last_name
+    session['username'] = oAuthor.username
+    result = {
+        'status': 'success',
+        'author': author_dictionary(oAuthor)
+    }
+    return result
+
+@app.route('/app/login', methods=['POST'])
+def app_login():
+    # see if the Author name provided exists in the database
+    data = { "credential" : request.form["credential"] }
+    Author_in_db = Author.get_Author_by_credential(data)
+    result = {
+        'status': 'success'
+    }
+    messages = {}
+    # Author is not registered in the db
+    if not Author_in_db:
+        result['status'] = 'failure'
+        messages['credentials'] = "We're sorry, your login credentials do not match"
+        result['messages'] = messages
+        return result
+    if not bcrypt.check_password_hash(Author_in_db.password, request.form['password']):
+        result['status'] = 'failure'
+        messages['credentials'] = "We're sorry, your login credentials do not match"
+        result['messages'] = messages
+        return result
+    # NOTE: not sure how session will work with the api stuff 05/19/22
+    session['Author_id'] = Author_in_db.id
+    session['firstname'] = Author_in_db.first_name
+    session['lastname'] = Author_in_db.last_name
+    session['username'] = Author_in_db.username
+
+    result['author'] = author_dictionary(Author_in_db)
+    return result
+
+def author_dictionary(author):
     authorDict = {
-        'id': author.id,
-        'firstname': author.first_name,
-        'lastname': author.last_name,
-        'email': author.email,
-        'username': author.username,
+        'author_id' : author.id,
+        'firstname' : author.first_name,
+        'lastname'  : author.last_name,
+        'username'  : author.username,
+        'email'     : author.email,
         'created_at': author.created_at,
         'updated_at': author.update_at
     }
     return authorDict
+
+@app.route('/api/logout')
+def api_logout():
+    session.clear()
+    return True # not sure if it matters what we do here.
+

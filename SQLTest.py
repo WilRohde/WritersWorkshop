@@ -42,11 +42,16 @@ group = Group(data)
 # groupJSON = json.loads(groupJSONData)
 # print(groupJSON)
 
-print("Encode into JSON formatted Data")
-groupJSONData = json.dumps(group.toJson(), indent=4)
-print(groupJSONData)
+# print("Encode into JSON formatted Data")
+# groupJSONData = json.dumps(group.toJson(), indent=4)
+# print(groupJSONData)
 
-# Let's load it using the load method to check if we can decode it or not.
-print("Decode JSON formatted Data")
-groupJSON = json.loads(groupJSONData)
-print(groupJSON)
+# # Let's load it using the load method to check if we can decode it or not.
+# print("Decode JSON formatted Data")
+# groupJSON = json.loads(groupJSONData)
+# print(groupJSON)
+
+status = {'status': True}
+print(status['status'])
+status['status'] = False
+print(status['status'])

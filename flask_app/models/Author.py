@@ -145,3 +145,53 @@ class Author:
         if not PASSWORD_REGEX.match(data['password']):
             flash("Password must be 8 valid characters!","login")
         return is_valid
+
+    @staticmethod
+    def api_validate(data):
+        is_valid = True
+        status = {
+            'status': is_valid
+        }
+        messages = {}
+        # test whether a field matches the pattern
+        if not EMAIL_REGEX.match(data['email']): 
+            messages['email'] = "Invalid email address!"
+            is_valid = False
+        if not NAME_REGEX.match(data['firstname']):
+            messages['firstname'] = "First Name is invalid!"
+            is_valid = False
+        if not NAME_REGEX.match(data['lastname']):
+            messages['lastname'] = "Last Name is invalid!"
+            is_valid = False
+        if not PASSWORD_REGEX.match(data['password']):
+            messages['paswordInvalid'] = "Password must be 8 valid characters!"
+            is_valid = False
+        if (data['password']!=data['confirm-password']):
+            messages['passwordMatch'] = "Password entries do not match!"
+            is_valid = False
+        results = Author.get_Author_by_email(data)
+        if results != False:
+            messages['emailDuplicate'] = f"Author email {data['email']} already exists in database!"
+            is_valid = False
+        if not is_valid:
+            status['status'] = False,
+            status['messages'] = messages
+        return status
+
+    @staticmethod
+    def api_validate_login(data):
+        is_valid = True
+        status = {
+            'status': is_valid
+        }
+        messages = {}
+        if not EMAIL_REGEX.match(data['email']): 
+            messages['email'] = "Invalid email address!"
+            is_valid = False
+        if not PASSWORD_REGEX.match(data['password']):
+            messages['password'] = "Password must be 8 valid characters!"
+            is_valid = False
+        if not is_valid:
+            status['status'] = False,
+            status['messages'] = messages
+        return is_valid
