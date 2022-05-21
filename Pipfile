@@ -10,6 +10,8 @@ flask-bcrypt = "*"
 flask-restx = "*"
 flask-jwt-extended = "*"
 flask-sqlalchemy = "*"
+flask-headers = "*"
+flask-cors = "*"
 
 [dev-packages]
 

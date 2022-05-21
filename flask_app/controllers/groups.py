@@ -1,6 +1,7 @@
 import pprint
 from flask import session, render_template, request, redirect, flash, json
 from flask_app import app
+from flask_headers import headers
 from flask_app.models.Group import Group
 from flask_app.models.Genre import Genre
 from flask_app.models.Submission import Submission
@@ -82,6 +83,7 @@ def update_group():
     return redirect('/dashboard')
 
 @app.route('/api/group/all')
+@headers({'Access-Control-Allow-Origin': '*'})
 def get_all_groups():
     groups = Group.get_all()
     k = 1
