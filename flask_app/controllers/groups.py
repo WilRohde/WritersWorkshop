@@ -1,5 +1,5 @@
 import pprint
-from flask import session, render_template, request, redirect, flash, json
+from flask import session, render_template, request, redirect, flash, json, jsonify
 from flask_app import app
 from flask_headers import headers
 from flask_app.models.Group import Group
@@ -83,15 +83,20 @@ def update_group():
     return redirect('/dashboard')
 
 @app.route('/api/group/all')
-@headers({'Access-Control-Allow-Origin': '*'})
+#@headers({'Access-Control-Allow-Origin': '*'})
 def get_all_groups():
     groups = Group.get_all()
-    k = 1
+    k = 0
     allGroups = {}
     for group in groups:
         allGroups[k] = group_dictionary(group)
         k = k + 1
-    return allGroups
+    result = {
+        'status': 'success',
+        'count': k,
+        'groups': allGroups
+    }
+    return result
 
 @app.route('/api/group/<int:id>')
 def api_get_group(id):
@@ -100,7 +105,14 @@ def api_get_group(id):
     }
     group = Group.get_by_id(data)
     groupDict = group_dictionary(group)
-    return groupDict
+    allGroups = {}
+    allGroups[0] = groupDict
+    result = {
+        "status": "success",
+        "count": 1,
+        "groups": allGroups
+    }
+    return result
 
 def group_dictionary(group):
     groupDict = {
@@ -113,14 +125,20 @@ def group_dictionary(group):
         'updated_at': group.updated_at,
         'Creator_id': group.creator_id,
         'Genre_id': group.genre_id,
-        'Genre_name': group.genre
+        'Genre_name': group.genre,
+        'member_count': group.member_count
     }
     return groupDict
 
 @app.route('/api/group/create', methods=['POST'])
 def api_create_group():
+    result = {}
+    messages = {}
     if not Group.validate(request.form):
-        return "Group data is invalid"
+        result['status'] = 'failure'
+        messages['validate'] = 'Group data is invalid'
+        result['messages'] = messages
+        return result
     data = {
         'name': request.form['groupname'],
         'genre_id': request.form['genre'],
@@ -132,23 +150,19 @@ def api_create_group():
     }
     # make sure the group doesn't already exist
     if (Group.is_group(data)):
-        return "A group by this name already exists"
+        result['status'] = 'failure'
+        messages['duplicate'] = "A group by this name already exists"
+        result['messages'] = messages
+        return result
         
     group = Group.save(data)
     if group == False:
-        return "An error occurred creating this group"
+        result['status'] = 'failure'
+        messages['error'] = "An error occurred creating this group"
+        result['messages'] = messages
+        return result
     else:
-        return group_dictionary(group)
-        # groupDict = {}
-        # groupDict['id'] = group.id,
-        # groupDict['name'] = group.name,
-        # groupDict['description'] = group.description,
-        # groupDict['short_description'] = group.short_description,
-        # groupDict['founding_date'] = group.founding_date,
-        # groupDict['created_at'] = group.created_at,
-        # groupDict['updated_at'] = group.updated_at,
-        # groupDict['Creator_id'] = group.creator_id,
-        # groupDict['Genre_id'] = group.genre_id,
-        # groupDict['Genre_name'] = group.genre
-        # return groupDict
-        
+        result['status'] = 'success'
+        result['count'] = 1
+        result['groups'] = group_dictionary(group)
+        return result

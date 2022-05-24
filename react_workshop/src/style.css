@@ -1,0 +1,10 @@
+.ws-header {
+    border: 3px red solid;
+    width: 80%;
+    height: 20%;
+}
+.wgroup-container {
+    border: 3px blue solid;
+    width: 80%;
+    height: 30%
+}

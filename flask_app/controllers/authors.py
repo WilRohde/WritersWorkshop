@@ -87,7 +87,11 @@ def author_by_username(username):
     }
     author = Author.get_Author_by_username(data)
     authorDict = author_dictionary(author)
-    return authorDict
+    result = {
+        'status': 'success',
+        'author': authorDict
+    }
+    return result
 
 @app.route('/api/register', methods=['POST'])
 def api_register():
@@ -153,6 +157,10 @@ def app_login():
     session['username'] = Author_in_db.username
 
     result['author'] = author_dictionary(Author_in_db)
+    result = {
+        'status': 'success',
+        'author': author_dictionary(Author_in_db)
+    }
     return result
 
 def author_dictionary(author):
