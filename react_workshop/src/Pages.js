@@ -1,13 +1,8 @@
 import React from "react";
-import {
-    Link,
-    useLocation,
-    Outlet
-} from "react-router-dom";
 
-export const navDashboard = () =>
+export const Dashboard = () =>
     <section className="dashboard">
-        <h1>[Home Page]</h1>
+        <Dashboard />
     </section>
 
 export const About = () =>
@@ -15,14 +10,44 @@ export const About = () =>
         <h1>[About]</h1>
     </section>
 
+export const Account = () =>
+    <section className="account">
+        <h1>[Account]</h1>
+    </section>
+
+export const ViewAccount = () =>
+    <section className="account">
+        <h1>[View Account]</h1>
+    </section>
+
+export const UpgradeAccount = () =>
+    <section className="account">
+        <h1>[Upgrade Account]</h1>
+    </section>
+
 export const Groups = () =>
     <section className="groups">
         <h1>[Groups]</h1>
     </section>
 
+export const CreateGroup = () =>
+    <section className="groups">
+        <h1>[Create Group]</h1>
+    </section>
+
+export const BrowseGroups = () =>
+<section className="groups">
+    <h1>[Browse Groups]</h1>
+</section>
+
 export const Genres = () =>
     <section className="genres">
         <h1>[Genres]</h1>
+    </section>
+
+export const CreateGenre = () =>
+    <section className="genres">
+        <h1>[Create Genres]</h1>
     </section>
 
 export const Submissions = () =>
@@ -34,16 +59,14 @@ export const Contact = () =>
     <section className="Contact">
         <h1>[Contact Us]</h1>
     </section>
-// export function Dashboard() {
-//     return (
-//     <div>
-//         <h1>[Writer's Workshop]</h1>
-//         <nav>
-//             <Link to="about">About</Link>
-//             <Link to="groups">Events</Link>
-//             <Link to="genres">Contact Us</Link>
-//             <Link to="submissions">Products</Link>
-//         </nav>
-//     </div>
-//     );
-//     }
+
+export const ViewSubmissions = () =>
+    <section className="submissions">
+        <h1>[View Submissions]</h1>
+    </section>
+
+export const CreateSubmission = () =>
+    <section className="submissions">
+        <h1>[Submit Submission]</h1>
+    </section>
+

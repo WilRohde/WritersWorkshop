@@ -47,15 +47,15 @@ class Groups extends Component {
             founding_date: '05/16/2020',
             description: 'Lots of goofy pirate weirdness',
             count: 2
-          },
-          {
+            },
+            {
             name: "Sci Fi Rangers",
             GenreName: 'Science Fiction',
             founding_date: '08/13/2010',
             description: 'sci fi foolishness',
             count: 11
             
-          }
+            }
         ]
         this.setState({groups: myGroups})
     }

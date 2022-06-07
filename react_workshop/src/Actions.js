@@ -1,0 +1,21 @@
+import React from 'react'
+import C from './constants'
+import {v4} from 'uuid'
+
+export const addGroup = (_name, _genre, _short_description, _founding_date, _description) => ({
+    type: C.ADDGROUP,
+    id: v4(),
+    name: _name,
+    genre: _genre,
+    short_description: _short_description,
+    founding_date: _founding_date,
+    description: _description 
+})
+
+export const addGenre = (_name, _short_description, _description) => ({
+    type: C.ADDGENRE,
+    id: v4(),
+    name: _name,
+    short_description: _short_description,
+    description: _short_description
+})
