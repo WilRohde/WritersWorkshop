@@ -1,6 +1,5 @@
-import React, {Component} from 'react';
+import React from 'react';
 import 'react-bootstrap';
-import Group from './Group';
 import './style.css';
 import {addGroup} from './Actions'
 
@@ -19,21 +18,58 @@ export const GroupForm = (props, {store}) => {
     }
     return (
     <form className="addGroup" onSubmit={submit}>
-        <input ref={input => _name=input}
-            type = 'text'
-            placeholder = "group name" required />
-        <input ref={input => _short_description = input}
-                type = 'text'
-                placeholder = "short description" required />
-        <input ref={input => _genre = input}
-                type='text'
-                placeholder = "genre" required />
-        <input ref={input => _founding_date = input}
-                type="date"
-                placeholder="founding date" required />
-        <input ref={input => _description = input}
-                type="textarea"
-                placeholder = "description" required />
+        <table>
+            <tr>
+                <td>
+                    <label>Group Name: </label>
+                </td>
+                <td>
+                    <input ref={input => _name=input}
+                    type = 'text'
+                    placeholder = "group name" required />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>Short Description: </label>
+                </td>
+                <td>
+                    <input ref={input => _short_description = input}
+                        type = 'text'
+                        placeholder = "short description" required />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>Genre: </label>
+                </td>
+                <td>
+                    <input ref={input => _genre = input}
+                        type='text'
+                        placeholder = "genre" required />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>Founding Date: </label>
+                </td>
+                <td>
+                    <input ref={input => _founding_date = input}
+                        type="date"
+                        placeholder="founding date" required />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>Description</label>
+                </td>
+                <td>
+                    <input ref={input => _description = input}
+                        type="textarea"
+                        placeholder = "description" required />
+                </td>
+            </tr>
+        </table>
         <button>Add</button>
     </form>
     )

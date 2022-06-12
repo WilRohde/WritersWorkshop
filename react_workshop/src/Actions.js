@@ -19,3 +19,19 @@ export const addGenre = (_name, _short_description, _description) => ({
     short_description: _short_description,
     description: _short_description
 })
+
+export const upgradeAccount = (_firstname, _mi, _lastname, _address1, _address2, _city, _state, _zip, _creditcard, _securitynumber, _expiration) => ({
+    type: C.UPGRADEACCOUNT,
+    id: v4(),
+    firstname: _firstname,
+    mi: _mi,
+    lastname: _lastname,
+    address1: _address1,
+    address2: _address2,
+    city: _city,
+    state: _state,
+    zip: _zip,
+    creditcard: _creditcard,
+    securitynumber: _securitynumber,
+    expiration: _expiration
+})

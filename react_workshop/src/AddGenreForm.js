@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 import 'react-bootstrap';
 import './style.css';
 import {addGenre} from './Actions'
@@ -15,15 +15,38 @@ export const AddGroupForm = (props,{store}) => {
     }
     return(
         <form className="addGenre" onSubmit={submit}>
-            <input ref={input => _name=input}
-                type = 'text'
-                placeholder = "genre name" required />
-            <input ref={input => _short_description=input}
-                type = 'text'
-                placeholder = "short description" required />
-            <input ref={input => _description=input}
-                type = 'text'
-                placeholder = "description" required />
+            <table>
+                <tr>
+                    <td>
+                        <label>Genre Name: </label>
+                    </td>
+                    <td>
+                        <input ref={input => _name=input}
+                            type = 'text'
+                            placeholder = "genre name" required />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>Short Description: </label>
+                    </td>
+                    <td>
+                        <input ref={input => _short_description=input}
+                            type = 'text'
+                            placeholder = "short description" required />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>Description: </label>
+                    </td>
+                    <td>
+                        <input ref={input => _description=input}
+                            type = 'text'
+                            placeholder = "description" required />
+                    </td>
+                </tr>
+            </table>
             <button>Add</button>
         </form>
     )

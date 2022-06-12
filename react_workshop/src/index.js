@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
@@ -9,34 +9,31 @@ import {
   About,
   Genres,
   Submissions,
-  CreateGroup,
   BrowseGroups,
-  ViewAccount,
-  UpgradeAccount,
-  CreateGenre,
   CreateSubmission,
   ViewSubmissions
 } from './Pages'
-import {Dashboard} from './Dashboard'
 import Groups from './Groups'
 import GroupForm from './GroupForm';
 import AddGenreForm from './AddGenreForm'
+import FormUpgradeAccount from './FormUpgradeAccount';
+import  FormMyAccount  from './FormMyAccount';
+import {Dashboard} from './Dashboard'
 const hdrConfig = {
   firstname: 'William',
   lastname: 'Hearst'
 }
-
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Dashboard authorName = {hdrConfig}/>}>
-            <Route index element={<Groups />} />
+          <Route path="/" element={<Dashboard authorName={hdrConfig}/>}>
+            <Route index element={<Groups/>} />
             <Route path="/about" element={<About />} />
             <Route path="/account" element={<Account />} />
-            <Route path="/account/view" element={<ViewAccount />} />
-            <Route path="/account/upgrade" element={<UpgradeAccount />} />
+            <Route path="/account/view" element={<FormMyAccount />} />
+            <Route path="/account/upgrade" element={<FormUpgradeAccount />} />
             <Route path="/genres" element={<Genres />} />
             <Route path="/genres/create" element={<AddGenreForm />} />
             <Route path="/groups" element={<Groups />} />
@@ -47,8 +44,8 @@ root.render(
             <Route path="/submissions/view" element={<ViewSubmissions />} />
           </Route>
         </Routes>
-      <App />
-    </BrowserRouter>
+        <App />
+      </BrowserRouter>
   </React.StrictMode>
 );
 

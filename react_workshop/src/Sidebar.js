@@ -1,5 +1,4 @@
 import {Link, NavLink} from 'react-router-dom'
-import GroupForm from './GroupForm'
 
 function linkStyle(isActive){
     return {
@@ -10,8 +9,8 @@ function linkStyle(isActive){
 }
 export const Sidebar = () =>
     <nav className="nav-column">
-        <Link to="home">[Dashboard]</Link>
-        <Link to="account">[Account]</Link> 
+        <NavLink to="/">[Dashboard]</NavLink>
+        <NavLink to="account">[Account]</NavLink> 
         <NavLink
             style={({ isActive }) => {
             return {
@@ -25,7 +24,6 @@ export const Sidebar = () =>
         >
             {'[My Account]'}
         </NavLink>
-        {/* <Link to="account/view">[My Account]</Link> */}
         <NavLink
             style={({ isActive }) => {
             return {
@@ -39,7 +37,6 @@ export const Sidebar = () =>
         >
             {'[Upgrade to Premium]'}
         </NavLink>
-        {/* <Link to="account/upgrade">[Upgrade to Pemium]</Link> */}
         <NavLink
             style={({ isActive }) => {
             return {
@@ -53,7 +50,6 @@ export const Sidebar = () =>
         >
             {'[LogOut]'}
         </NavLink>
-        {/* <Link to="logout">[LogOut]</Link> */}
         <NavLink
             style={({ isActive }) => {
             return {
@@ -67,7 +63,6 @@ export const Sidebar = () =>
         >
             {'[Groups]'}
         </NavLink>
-        {/* <Link to="groups">[Groups]</Link> */}
         <NavLink
             style={({ isActive }) => {
             return {
@@ -81,7 +76,6 @@ export const Sidebar = () =>
         >
             {'[Create a Group]'}
         </NavLink>
-        {/* <Link to="groups/create">[Start a Group]</Link> */}
         <NavLink
             style={({ isActive }) => {
             return {
@@ -95,7 +89,6 @@ export const Sidebar = () =>
         >
             {'[Browse Groups]'}
         </NavLink>
-        {/* <Link to="groups/browse">[Browse Groups]</Link> */}
         <NavLink
             style={({ isActive }) => {
             return {
@@ -109,7 +102,6 @@ export const Sidebar = () =>
         >
             {'[Genres]'}
         </NavLink>
-        {/* <Link to="genres">[Genres]</Link> */}
         <NavLink
             style={({ isActive }) => {
             return {
@@ -123,7 +115,6 @@ export const Sidebar = () =>
         >
             {'[Create a Genre]'}
         </NavLink>
-        {/* <Link to="genres/create">[Create a Genre]</Link> */}
         <NavLink
             style={({ isActive }) => {
             return {
@@ -137,7 +128,6 @@ export const Sidebar = () =>
         >
             {'[Submissions]'}
         </NavLink>
-        {/* <Link to="submissions">[Submissions]</Link> */}
         <NavLink
             style={({ isActive }) => {
             return {
@@ -151,7 +141,6 @@ export const Sidebar = () =>
         >
             {'[Submit Your Work]'}
         </NavLink>
-        {/* <Link to="submissions/create">[Submit Your Work]</Link> */}
         <NavLink
             style={({ isActive }) => {
             return {
@@ -165,7 +154,6 @@ export const Sidebar = () =>
         >
             {'[View Your Submissions]'}
         </NavLink>
-        <Link to="submissions/view">[View Your Submissions]</Link>
     </nav>
 
 export default Sidebar
