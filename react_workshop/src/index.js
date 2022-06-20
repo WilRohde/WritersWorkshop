@@ -7,12 +7,12 @@ import {BrowserRouter, Routes, Route} from 'react-router-dom'
 import {
   Account,
   About,
-  Genres,
   Submissions,
   BrowseGroups,
   CreateSubmission,
   ViewSubmissions
 } from './Pages'
+import Genres from './Genres'
 import Groups from './Groups'
 import GroupForm from './GroupForm';
 import AddGenreForm from './AddGenreForm'

@@ -86,6 +86,20 @@ class Genre:
         #         "short_description = %(short_description)s where id = %(id)s;"
         # return MySQLConnection(dbName).query_db( query, data )
 
+    @classmethod
+    def is_genre(cls,data):
+        _data = [
+            data['name']
+        ]
+        # NOTE: have to make sure this procedure is finished 6/13/2022 use direct query for now
+        #results = MySQLConnection(dbName).call_proc('get_genre_by_name',_data)
+        query = "SELECT * FROM Genres WHERE name = %(name)s;"
+        results = MySQLConnection(dbName).query_db( query, data )
+        if len(results) > 0:
+            return True
+        else:
+            return False
+
     @staticmethod
     def validate(data):
         is_valid = True

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import 'react-bootstrap';
 import './style.css';
 import {addGroup} from './Actions'
@@ -19,6 +19,7 @@ export const GroupForm = (props, {store}) => {
     return (
     <form className="addGroup" onSubmit={submit}>
         <table>
+            <tbody>
             <tr>
                 <td>
                     <label>Group Name: </label>
@@ -69,6 +70,7 @@ export const GroupForm = (props, {store}) => {
                         placeholder = "description" required />
                 </td>
             </tr>
+            </tbody>
         </table>
         <button>Add</button>
     </form>
