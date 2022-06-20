@@ -1,0 +1,10 @@
+.text-groups {
+    width: 800px;
+    height: 800px;
+}
+.group-block {
+    display: flex;
+    flex-direction: column;
+    width: 900px;
+    height: 900px;
+}

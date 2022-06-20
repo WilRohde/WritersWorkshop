@@ -11,29 +11,94 @@
 <body>
     <div class="workshop-header">
         <h1 class="h1-workshop">Welcome Back {{session['firstname']}}!</h1>
-        <div class="workshop-header-btns">
+        <!-- <div class="workshop-header-btns">
             <form action="/dashboard"><button type="submit" class="btn-success btn-workshop">Dashboard</button></form>
             <form action="/logout"><button type="submit" class="btn-danger btn-workshop">Logout</button></form>
+        </div> -->
+    </div>
+    <div class="workshop-menus">
+        <div>
+            <div class="dropdown">
+                <button class="dropbtn">Your Profile</button>
+                <div class="dropdown-content">
+                    <a href="#">Upgrade to Premium</a>
+                    <a href="#">View your profile</a>
+                    <a href="Logout">Logout</a>
+                </div>
+            </div>
+        </div>
+        <div class="dropdown">
+            <button class="dropbtn">Community</button>
+            <div class="dropdown-content">
+                <a href="/dashboard">Return to the Dashboard</a>
+            </div>
         </div>
     </div>
     <br>
     <div class="submission-div">
-        <form action="/submit/save" method="post" class="submit-form">
-            <h3 class="h3-submit">Cut and paste you submission below.</h3>
-            <input type="text" hidden readonly name="group_id" id="group_id" value="{{group.id}}">
-            <div class="submission-wide">
-                <div class="div-title">
-                    <label for="title">Title: </label>
-                    <input type="text" name="title" id="title" class="title-box">
-                </div>
-                <div class="div-title">
-                    <label for="description">Short Description:</label>
-                    <input type="text" name="description" id="description" class="title-box">
-                </div>
-            </div>
+        <form action="#" method="post" class="submit-form">
+            <h3 class="h3-submit">Cut and paste you submission below, or upload a .txt file</h3>
+            <p class="p-submit">(We accept Text (.txt) and Rich Text (.rtf) files)</p>
+            <label for="submit_file" class="file-label">Select a file: </label>
+            <input type="file" name="submit_file" id="submit_file" class="file-submit" onchange="readSingleFile(event)" accept=".txt, .rtf">
+            <button type="button" class="file-open">Open file</button>
             <label for="submission_text">Your submission: </label>
             <textarea name="submission_text" id="submission_text" rows="15" class="submission_area"></textarea>
             <input type="submit" class="btn-success btn-workshop btn-submission">
         </form>
     </div>
 </body>
+<script type="text/javascript">
+    // const fileUploader = document.getElementById('submission_text')
+    // fileUploader.addEventListener('change',(event) =>
+    function readSingleFile(evt) 
+    {
+        //Retrieve the first (and only!) File from the FileList object
+        var f = evt.target.files[0]; 
+
+        if (f) {
+        var r = new FileReader();
+        r.onload = function(e) { 
+            var contents = e.target.result;
+            const name = f.name;
+            const type = f.type ? f.type: 'NA';
+            const size = f.size;
+            const lastModified = f.lastModified;
+            console.log({ f, name, type, size, lastModified });
+            alert( "Got the file.\n" 
+                +"name: " + f.name + "\n"
+                +"type: " + f.type + "\n"
+                +"size: " + f.size + " bytes\n"
+                + "starts with: " + contents.substr(1, contents.indexOf("\n"))
+            );  
+            document.getElementById('submission_text').value=  contents;
+        }
+        r.readAsText(f);
+
+        } else { 
+            alert("Failed to load file");
+        }
+    };
+    // var openFile = function(event) {
+    //     var input = event.target;
+
+    //     var reader = new FileReader();
+    //     reader.onloadstart = function(e) {
+    //         var contents = e.target.result;
+    //         alert( "Got the file.\n" 
+    //             +"name: " + f.name + "\n"
+    //             +"type: " + f.type + "\n"
+    //             +"size: " + f.size + " bytes\n"
+    //             + "starts with: " + contents.substr(1, contents.indexOf("\n"))
+    //         );  
+    //         document.getElementById('submission_text').value=  contents;
+    //         reader.abort();
+    //     };
+
+    //     reader.onloadend = function() {
+    //     console.log(reader.error.message);
+    //     };
+
+    //     reader.readAsDataURL(input.files[0]);
+    // };
+</script>

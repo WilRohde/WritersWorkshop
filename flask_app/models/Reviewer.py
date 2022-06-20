@@ -1,5 +1,5 @@
 from flask_app.config.mySQLConnection import MySQLConnection, connectToMySQL
-from flask import flash
+from flask import json
 from flask_app import app
 from flask_app.models.Author import Author
 
@@ -10,7 +10,10 @@ class Reviewer:
         self.email = data['email']
         self.first_name = data['firstname']
         self.last_name = data['lastname']
-    
+
+    def toJson(self):
+        return json.dumps(self, default=lambda o: o.__dict__)
+
     @classmethod
     def get_reviewer(cls, id):
         data = {

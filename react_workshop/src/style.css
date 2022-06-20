@@ -1,0 +1,73 @@
+.ws-header {
+    border: 3px grey solid;
+    width: 100%;
+    height: 20%;
+}
+.groups-container {
+    border: 3px blue solid;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 80%
+}
+.main {
+    border: 3px black solid;
+    display: flex;
+    flex-direction: row;
+    width: 100%
+}
+.dashboard {
+    border: 3px grey solid;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 50%;
+}
+.ws-header h2 {
+    align-content: center;
+    text-align: center;
+}
+.ws-header p {
+    text-align: center;
+}
+.nav-column {
+    border: 3px grey solid;
+    display: flex;
+    flex-direction: column;
+    width: 20%;
+    height: 100%;
+}
+.item-box {
+    border: 3px grey solid;
+    width: 20%;
+    height: 100%;
+}
+.items-box {
+    border: 3px grey solid;
+    width: 100%;
+    height: 100%;
+}
+.items-box h2 {
+    align-content: center;
+    text-align: center;
+}
+.myAccount {
+    display: flex;
+    flex-direction: column;
+}
+.formItem {
+    display: flex;
+    flex-direction: row;
+}
+.addGroup{
+    display: flex;
+    flex-direction: column;
+}
+.upgradeAccount {
+    display: flex;
+    flex-direction: column;
+}
+.itemCell {
+    border: 2px red solid;
+    width: 200px;
+}

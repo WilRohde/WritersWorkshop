@@ -1,0 +1,41 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel='stylesheet' type='text/css' href='{{ url_for('static', filename='/css/bootstrap.css') }}'>
+    <link rel='stylesheet' type='text/css' href='{{ url_for('static', filename='/css/style.css') }}'>
+    <title>Sign Up</title>
+</head>
+<body>
+    <h1 class="h1-login">User Registration</h1>
+    <div class="container-loginpage">
+    <div class="div-registration">
+        <h2 class="h2-registration">Registration</h2>
+        {% with messages = get_flashed_messages(category_filter=['register']) %}    <!-- declare a variable called messages -->
+            {% if messages %}                           <!-- check if there are any messages -->
+                {% for message in messages %}           <!-- loop through the messages -->
+                    <p class="email-message">{{message}}</p>                  <!-- display each message in a paragraph tag -->
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        <form action="/register" method="post" class="register-form">
+            <label for="firstname" class="lbl-register">FirstName: </label>
+            <input type="text" placeholder="First Name" name="firstname" id="firstname" class="input-login-data">
+            <label for="lastname" class="lbl-register">Last Name: </label>
+            <input type="text" placeholder="Last Name" name="lastname" id="lastname" class="input-login-data">
+            <label for="username" class="lbl-register">Username: </label>
+            <input type="text" placeholder="Username" name="username" id="username" class="input-login-data">
+            <label for="email" class="lbl-register">Email: </label>
+            <input type="text" placeholder="E-mail" name="email" id="email" class="input-login-data">
+            <label for="password" class="lbl-register">Password: </label>
+            <input type="password" placeholder="Password" name="password" id="password" class="input-login-data">
+            <label for="confirm-password" class="lbl-register">Confirm Password: </label>
+            <input type="password" placeholder="Confirm Password" name="confirm-password" id="confirm-password" class="input-login-data">
+            <button type="submit" id="Submit" class="btn btn-primary btn-register">Submit</button>
+            <p class="click-home"><a href="\">Click here</a> to return to the home page.</p>
+        </form>
+    </div>    
+</body>

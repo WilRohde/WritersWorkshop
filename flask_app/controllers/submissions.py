@@ -10,12 +10,12 @@ def edit_submission(id):
     }
     return render_template('update_submission.html', submission = Submission.get(data))
 
-@app.route('/submit/new/<int:id>')
-def new_submission(id):
+@app.route('/submit/new')
+def new_submission():
     data = {
-        'id': id
+        'id': session['Author_id']
     }
-    return render_template('upload_submission.html', group = Group.get_by_id(data))
+    return render_template('upload_submission.html', groups = Group.get_all_for_author(data))
 
 @app.route('/submit/create')
 def create_submission():

@@ -1,5 +1,5 @@
 from flask_app.config.mySQLConnection import MySQLConnection, connectToMySQL
-from flask import flash
+from flask import json, flash
 from flask_app import app
 from flask_bcrypt import Bcrypt
 import re
@@ -13,17 +13,39 @@ dbName = "workshop_schema"
 class Author:
     def __init__(self,data):
         self.id = data['id']
+        self.username = data['username']
         self.email = data['email']
         self.first_name = data['firstname']
         self.last_name = data['lastname']
         self.password = data['password']
-        self.created_at = data['created_at']
-        self.update_at = data['updated_at']
+        self.created_at = str(data['created_at'])
+        self.update_at = str(data['updated_at'])
+
+    def toJson(self):
+        return json.dumps(self, default=lambda o: o.__dict__)
 
     @classmethod
     def save(cls,data):
-        query = "INSERT INTO Authors (email, firstname, lastname, password) VALUES (%(email)s, %(firstname)s, %(lastname)s, %(password)s);"
-        return MySQLConnection(dbName).query_db( query, data )
+        data['@id']=0
+        _data = [
+            data['username'],
+            data['email'],
+            data['firstname'],
+            data['lastname'],
+            data['password']
+        ]
+        results = MySQLConnection(dbName).call_proc('create_author',_data)
+        print(f"value returned results = {results}")
+        if (results == False):
+            print(f"value {results} fell into False")
+            return False
+        else:
+            # it worked. Now go back and get the member from the db
+            print(f"fell into success with value result = {results}")
+            # _data = [data['username']]
+            # results = MySQLConnection(dbName).call_proc('get_author_by_username',_data)
+            _author = Author(results[0])
+            return _author
 
     @classmethod
     def login(cls,data):
@@ -31,36 +53,61 @@ class Author:
         return MySQLConnection(dbName).query_db( query, data )
 
     @classmethod
+    def get_Author_by_credential(cls,data):
+        if EMAIL_REGEX.match(data['credential']):
+            # signing in with e-mail
+            _data = [data['credential']]
+            results = MySQLConnection(dbName).call_proc('get_author_by_email',_data)
+            print(f"value returned results = {results}")
+            if (results == False) or (results == ()):
+                return False
+            else:
+                _author = Author(results[0])
+                return _author
+        else:
+            _data = [data["credential"]]
+            results = MySQLConnection(dbName).call_proc('get_author_by_username',_data)
+            print(f"value returned results = {results}")
+            if (results == False) or (results == ()):
+                return False
+            else:
+                _author = Author(results[0])
+                return _author
+
+    @classmethod
     def get_Author_by_email(cls,data):
-        query = "SELECT * FROM Authors WHERE email = %(email)s;"
-        result = MySQLConnection(dbName).query_db( query, data )
-        print(result)
-        if len(result) <= 0:
-            print('get_Author_by_email Returned False')
+        _data = [
+            data['email']
+        ]
+        results = MySQLConnection(dbName).call_proc('get_author_by_email',_data)
+        print(f"value returned results = {results}")
+        if (results == False) or (results == ()):
             return False
-        return cls(result[0])
+        else:
+            _author = Author(results[0])
+            return _author
 
     @classmethod
     def get_Author_by_id(cls,data):
-        query = "SELECT * FROM Authors WHERE id = %(Author_id)s;"
-        print(f"get_Author_by_id query = {query}")
-        result = MySQLConnection(dbName).query_db( query, data )
-        if len(result) <= 0:
-            print('get_Author_by_id Returned False')
-            return False
-        return cls(result[0])
+            _data = [data['id']]
+            results = MySQLConnection(dbName).call_proc('get_author_by_id',_data)
+            print(f"value returned results = {results}")
+            if (results == False) or (results == ()):
+                return False
+            else:
+                _author = Author(results[0])
+                return _author
 
     @classmethod
-    def get_group_members(cls,data):
-        query = "SELECT Authors.* FROM Authors LEFT JOIN GroupMembers "\
-                "ON authors.id = GroupMembers.author_id LEFT JOIN WritingGroups ON GroupMembers.Group_id = "\
-                "WritingGroups.id WHERE WritingGroups.id = %(id)s;"
-        members = []
-        results = MySQLConnection(dbName).query_db( query, data )
-        for result in results:
-            members.append(cls(result))
-        return members
-
+    def get_Author_by_username(cls,data):
+            _data = [data['username']]
+            results = MySQLConnection(dbName).call_proc('get_author_by_username',_data)
+            print(f"value returned results = {results}")
+            if (results == False) or (results == ()):
+                return False
+            else:
+                _author = Author(results[0])
+                return _author
 
     @staticmethod
     def validate(data):
@@ -97,4 +144,54 @@ class Author:
             is_valid = False
         if not PASSWORD_REGEX.match(data['password']):
             flash("Password must be 8 valid characters!","login")
+        return is_valid
+
+    @staticmethod
+    def api_validate(data):
+        is_valid = True
+        status = {
+            'status': is_valid
+        }
+        messages = {}
+        # test whether a field matches the pattern
+        if not EMAIL_REGEX.match(data['email']): 
+            messages['email'] = "Invalid email address!"
+            is_valid = False
+        if not NAME_REGEX.match(data['firstname']):
+            messages['firstname'] = "First Name is invalid!"
+            is_valid = False
+        if not NAME_REGEX.match(data['lastname']):
+            messages['lastname'] = "Last Name is invalid!"
+            is_valid = False
+        if not PASSWORD_REGEX.match(data['password']):
+            messages['paswordInvalid'] = "Password must be 8 valid characters!"
+            is_valid = False
+        if (data['password']!=data['confirm-password']):
+            messages['passwordMatch'] = "Password entries do not match!"
+            is_valid = False
+        results = Author.get_Author_by_email(data)
+        if results != False:
+            messages['emailDuplicate'] = f"Author email {data['email']} already exists in database!"
+            is_valid = False
+        if not is_valid:
+            status['status'] = False,
+            status['messages'] = messages
+        return status
+
+    @staticmethod
+    def api_validate_login(data):
+        is_valid = True
+        status = {
+            'status': is_valid
+        }
+        messages = {}
+        if not EMAIL_REGEX.match(data['email']): 
+            messages['email'] = "Invalid email address!"
+            is_valid = False
+        if not PASSWORD_REGEX.match(data['password']):
+            messages['password'] = "Password must be 8 valid characters!"
+            is_valid = False
+        if not is_valid:
+            status['status'] = False,
+            status['messages'] = messages
         return is_valid
